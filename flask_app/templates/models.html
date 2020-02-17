@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h3>Trained Models</h3>
+	<br>
+  <div class="models">
+
+    <div class="header">
+      <h4 class="text-muted">Select a model to test it with your image and videos</h4>
+    </div>
+    <br>
+    <div class="list-group">
+        {% for model in all_models %}
+        <a href="{{ url_for('predect',model_name = model,img_name = img_name) }}" class="list-group-item list-group-item-action">{{ model }} - Test Image</a>
+        <a href="{{ url_for('predect_video',model_name = model,img_name = img_name) }}" class="list-group-item list-group-item-action">{{ model }} - Test Video</a>
+        {% endfor %}
+    </div>
+  </div>
+{% endblock %}

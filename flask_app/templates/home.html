@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="home">
+    <h2>Hello!! </h2>
+	<br>
+	<h3> Welcome to SpringML's object detection application.  </h3>
+	<br>
+	<h4> Follow these steps to start on with it. </h4>
+	<ol >
+		<li> Click on "Train Models" to train your models using your own dataset. </li>
+		<li> Click on "Models" to see the available trained models and to test your images using that. </li>
+	</ol>
+	<p> Note: If you don't have the annotations yet. You can use <a href = "{{ url_for('runLabelImg') }}" ><u>labelImg </u></a> to annotate 
+  </div>
+{% endblock %}

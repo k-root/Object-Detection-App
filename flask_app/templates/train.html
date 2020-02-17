@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+    
+  <h2>Train your object detection model</h2>
+<br>
+  <div class="container">
+
+    <div class="header">
+      <h3 class="text-muted">Upload a dataset</h3>
+    </div>
+<br>
+<div class="container">
+  <form method=post enctype=multipart/form-data>
+    <div class="form-group">
+      <label for="modelName">Name</label>
+      <input type="text" class="form-control" id="modelName" placeholder="Name your model" name="modelName">
+    </div>
+    <div class="form-group">
+      <label for="dataset">Dataset</label>
+      <input type="file" class="form-control" id="dataset"   name="file">
+    </div>
+    <button type="submit" class="btn btn-default" value=Upload>Submit</button>
+  </form>
+</div>
+<!-- <label >Dataset</label>
+    <form method=post enctype=multipart/form-data>
+      <input type="text" name=modelName>
+      <br>  
+      <input type=file name=file>
+      <br>
+      <input type=submit value=Upload>
+    </form> -->
+  </div>
+  <br>
+  <p>
+Note: Dataset should contain annotations and images folders
+  </p>
+{% endblock %}
