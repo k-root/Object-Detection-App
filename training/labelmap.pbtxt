@@ -1,0 +1,29 @@
+item {
+  id: 1
+  name: 'ID Corner Break'
+}
+
+item {
+  id: 2
+  name: 'OD Chamfer Length'
+}
+
+item {
+  id: 3
+  name: 'OD Chamfer Angle'
+}
+
+item {
+  id: 4
+  name: 'Flange Length and Thickness'
+}
+
+item {
+  id: 5
+  name: 'Flange Diameter'
+}
+
+item {
+  id: 6
+  name: 'Flange Bend Radius'
+}
