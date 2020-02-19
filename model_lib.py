@@ -22,7 +22,7 @@ import copy
 import functools
 import os
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from object_detection import eval_util
 from object_detection import exporter as exporter_lib

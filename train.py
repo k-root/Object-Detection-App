@@ -20,7 +20,7 @@ from __future__ import print_function
 
 from absl import flags
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 import model_hparams
 import model_lib

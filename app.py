@@ -9,7 +9,7 @@ import train
 import os
 app = Flask(__name__)
 app.config["DEBUG"]=True
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import pathlib
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
