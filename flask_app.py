@@ -56,7 +56,9 @@ def runTrain():
         os.mkdir("checkpoint/"+modelName)
     if model_dir not in dirList or not os.path.isdir(model_dir):
         os.mkdir("training")
-    weights = "mask_rcnn_kangaroo_cfg_0005.h5"
+        
+    weights = "mask_rcnn_kangaroo_cfg_0005.h5"##get this from frontend
+
     # train.training(model_dir,pipeline_config_path,num_train_steps, eval_training_data, checkpoint_dir)
     dataset_dir = "kangaroo"
     train.run_train(dataset_dir, weights)

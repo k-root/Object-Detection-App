@@ -104,7 +104,14 @@ def run_train(datasetDir, modelWeight):
 	config = KangarooConfig()
 	config.display()
 	# define the model
-	model = MaskRCNN(mode='training', model_dir='./', config=config)
+
+
+	###
+	'''Change model_dir to users/userName/datasetName/model'''
+	###
+	model = MaskRCNN(mode='training', model_dir='./users/user1/dataset/models/', config=config)
+
+
 	# load weights (mscoco) and exclude the output layers
 	model.load_weights(modelWeight, by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
 	# train weights (output layers or 'heads')
