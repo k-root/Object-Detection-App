@@ -1,83 +1,111 @@
-# Copyright 2017 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
-"""Binary to run train and evaluation on object detection model."""
+# fit a mask rcnn on the kangaroo dataset
+from os import listdir
+from xml.etree import ElementTree
+from numpy import zeros
+from numpy import asarray
+from mrcnn.utils import Dataset
+from mrcnn.config import Config
+from mrcnn.model import MaskRCNN
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# class that defines and loads the kangaroo dataset
+class KangarooDataset(Dataset):
+	# load the dataset definitions
+	def load_dataset(self, dataset_dir, is_train=True):
+		# define one class
+		self.add_class("dataset", 1, "kangaroo")
+		# define data locations
+		images_dir = dataset_dir + '/images/'
+		annotations_dir = dataset_dir + '/annots/'
+		# find all images
+		for filename in listdir(images_dir):
+			# extract image id
+			image_id = filename[:-4]
+			# skip bad images
+			if image_id in ['00090']:
+				continue
+			# skip all images after 150 if we are building the train set
+			if is_train and int(image_id) >= 150:
+				continue
+			# skip all images before 150 if we are building the test/val set
+			if not is_train and int(image_id) < 150:
+				continue
+			img_path = images_dir + filename
+			ann_path = annotations_dir + image_id + '.xml'
+			# add to dataset
+			self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
 
-from absl import flags
+	# extract bounding boxes from an annotation file
+	def extract_boxes(self, filename):
+		# load and parse the file
+		tree = ElementTree.parse(filename)
+		# get the root of the document
+		root = tree.getroot()
+		# extract each bounding box
+		boxes = list()
+		for box in root.findall('.//bndbox'):
+			xmin = int(box.find('xmin').text)
+			ymin = int(box.find('ymin').text)
+			xmax = int(box.find('xmax').text)
+			ymax = int(box.find('ymax').text)
+			coors = [xmin, ymin, xmax, ymax]
+			boxes.append(coors)
+		# extract image dimensions
+		width = int(root.find('.//size/width').text)
+		height = int(root.find('.//size/height').text)
+		return boxes, width, height
 
-import tensorflow.compat.v1 as tf
+	# load the masks for an image
+	def load_mask(self, image_id):
+		# get details of image
+		info = self.image_info[image_id]
+		# define box file location
+		path = info['annotation']
+		# load XML
+		boxes, w, h = self.extract_boxes(path)
+		# create one array for all masks, each on a different channel
+		masks = zeros([h, w, len(boxes)], dtype='uint8')
+		# create masks
+		class_ids = list()
+		for i in range(len(boxes)):
+			box = boxes[i]
+			row_s, row_e = box[1], box[3]
+			col_s, col_e = box[0], box[2]
+			masks[row_s:row_e, col_s:col_e, i] = 1
+			class_ids.append(self.class_names.index('kangaroo'))
+		return masks, asarray(class_ids, dtype='int32')
 
-import model_hparams
-import model_lib
+	# load an image reference
+	def image_reference(self, image_id):
+		info = self.image_info[image_id]
+		return info['path']
 
-def training(model_dir, pipeline_config_path, num_train_steps, eval_training_data, checkpoint_dir, sample_1_of_n_eval_examples=1, sample_1_of_n_eval_on_train_examples=5, hparams_overrides=None, run_once=False):
-#   model_dir
-#   pipeline_config_path
-#   num_train_steps
-#   eval_training_data
-#   ######'''should be optional'''######
-#   sample_1_of_n_eval_examples  
-#   sample_1_of_n_eval_on_train_examples
-#   hparams_overrides
-#   checkpoint_dir
-#   run_once
-  config = tf.estimator.RunConfig(model_dir=model_dir)
+# define a configuration for the model
+class KangarooConfig(Config):
+	# define the name of the configuration
+	NAME = "kangaroo_cfg"
+	# number of classes (background + kangaroo)
+	NUM_CLASSES = 1 + 1
+	# number of training steps per epoch
+	STEPS_PER_EPOCH = 131
 
-  train_and_eval_dict = model_lib.create_estimator_and_inputs(
-      run_config=config,
-      hparams=model_hparams.create_hparams(hparams_overrides),
-      pipeline_config_path=pipeline_config_path,
-      train_steps=num_train_steps,
-      sample_1_of_n_eval_examples=sample_1_of_n_eval_examples,
-      sample_1_of_n_eval_on_train_examples=(
-          sample_1_of_n_eval_on_train_examples))
-  estimator = train_and_eval_dict['estimator']
-  train_input_fn = train_and_eval_dict['train_input_fn']
-  eval_input_fns = train_and_eval_dict['eval_input_fns']
-  eval_on_train_input_fn = train_and_eval_dict['eval_on_train_input_fn']
-  predict_input_fn = train_and_eval_dict['predict_input_fn']
-  train_steps = train_and_eval_dict['train_steps']
+# prepare train set
 
-  if checkpoint_dir:
-    if eval_training_data:
-      name = 'training_data'
-      input_fn = eval_on_train_input_fn
-    else:
-      name = 'validation_data'
-      # The first eval input will be evaluated.
-      input_fn = eval_input_fns[0]
-    if run_once:
-      estimator.evaluate(input_fn,
-                         steps=None,
-                         checkpoint_path=tf.train.latest_checkpoint(
-                             checkpoint_dir))
-    else:
-      model_lib.continuous_eval(estimator, checkpoint_dir, input_fn,
-                                train_steps, name)
-  else:
-    train_spec, eval_specs = model_lib.create_train_and_eval_specs(
-        train_input_fn,
-        eval_input_fns,
-        eval_on_train_input_fn,
-        predict_input_fn,
-        train_steps,
-        eval_on_train_data=False)
-
-    # Currently only a single Eval Spec is allowed.
-    tf.estimator.train_and_evaluate(estimator, train_spec, eval_specs[0])
-    
+def run_train(datasetDir, modelWeight):
+	train_set = KangarooDataset()
+	train_set.load_dataset(datasetDir, is_train=True)
+	train_set.prepare()
+	print('Train: %d' % len(train_set.image_ids))
+	# prepare test/val set
+	test_set = KangarooDataset()
+	test_set.load_dataset(datasetDir, is_train=False)
+	test_set.prepare()
+	print('Test: %d' % len(test_set.image_ids))
+	# prepare config
+	config = KangarooConfig()
+	config.display()
+	# define the model
+	model = MaskRCNN(mode='training', model_dir='./', config=config)
+	# load weights (mscoco) and exclude the output layers
+	model.load_weights(modelWeight, by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
+	# train weights (output layers or 'heads')
+	model.train(train_set, test_set, learning_rate=config.LEARNING_RATE, epochs=5, layers='heads')
