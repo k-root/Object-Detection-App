@@ -29,7 +29,7 @@ class Dataset(Dataset):
 		len_train_data = math.ceil(test_train_split*total_dataset_length)
 		len_test_data = total_dataset_length - len_train_data
 
-		print(f"Total dataset Length:{total_dataset_length}, train length{len_train_data}, test length{len_test_data}")
+		print("Total dataset Length: "+ str(total_dataset_length)+"\ntrain length: "+str(len_train_data)+ "\ntest length :"+str(len_test_data))
 
 		if is_train:
 			for filenumber in range(len_train_data):
