@@ -6,7 +6,7 @@ import re
 import json
 import train
 # import evaluate
-# import predict
+import predict
 
 import os
 app = Flask(__name__)
@@ -35,6 +35,8 @@ def load_model(model_name):
 @app.route("/train",methods=['GET', 'POST'])
 def runTrain():
     modelName = request.args.get("modelName")
+    # classes = request.args.get("classes")
+    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
     dirList = os.listdir("./")
     # if modelName in dirList:
     #     #load model
@@ -46,8 +48,8 @@ def runTrain():
     # print(model)
 
     print(dirList)
-    model_dir = "training"
-    pipeline_config_path = "training/ssd_mobilenet_v2_coco.config"
+    model_dir = "training"####Change to dynamic
+    pipeline_config_path = "training/ssd_mobilenet_v2_coco.config"####Change to dynamic
     num_train_steps = None
     eval_training_data=False
     if not eval_training_data:
@@ -56,17 +58,26 @@ def runTrain():
         os.mkdir("checkpoint/"+modelName)
     if model_dir not in dirList or not os.path.isdir(model_dir):
         os.mkdir("training")
-        
-    weights = "mask_rcnn_kangaroo_cfg_0005.h5"##get this from frontend
+
+    weights = "mask_rcnn_coco.h5"##get this from frontend
 
     # train.training(model_dir,pipeline_config_path,num_train_steps, eval_training_data, checkpoint_dir)
-    dataset_dir = "kangaroo"
-    train.run_train(dataset_dir, weights)
+    dataset_dir = "ggbDataset"####Change to dynamic
+    train.run_train(dataset_dir, weights, classes)
     return "train"+modelName
 
 
 @app.route("/test",methods=['GET', 'POST'])
 def testModel():
+    modelName = request.args.get("modelName")
+    testFile = request.args.get("testFile")
+
+    # modelName = request.args.get("modelName")
+    predict.predict_main(modelName. testFile)
+    return "test"
+
+@app.route("/evaluate",methods=['GET', 'POST'])
+def evaluateModel():
     # modelName = request.args.get("modelName")
     return "test"
 

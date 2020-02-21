@@ -1,0 +1,86 @@
+<annotation>
+	<folder>flanged_test</folder>
+	<filename>bb0808dp4-s46_reve.jpg</filename>
+	<path>C:\Users\Kaushik Koilada\Documents\Desk\Projects\ggbearings\testImages\flanged_test\bb0808dp4-s46_reve.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>8268</width>
+		<height>5846</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>ID Corner Break</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1468</xmin>
+			<ymin>479</ymin>
+			<xmax>1999</xmax>
+			<ymax>986</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>OD Chamfer Angle</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>449</xmin>
+			<ymin>854</ymin>
+			<xmax>799</xmax>
+			<ymax>1554</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>OD Chamfer Length</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>955</xmin>
+			<ymin>1242</ymin>
+			<xmax>1768</xmax>
+			<ymax>1492</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Flange Length and Thickness</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1068</xmin>
+			<ymin>1736</ymin>
+			<xmax>2149</xmax>
+			<ymax>2248</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Flange Diameter</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1005</xmin>
+			<ymin>2486</ymin>
+			<xmax>1862</xmax>
+			<ymax>3148</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Flange Bend Radius</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1630</xmin>
+			<ymin>2923</ymin>
+			<xmax>2455</xmax>
+			<ymax>3429</ymax>
+		</bndbox>
+	</object>
+</annotation>

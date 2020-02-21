@@ -58,5 +58,6 @@ venv/
 ENV/
 
 kangaroo_cfg*/
+users/
 assets/
 samples/

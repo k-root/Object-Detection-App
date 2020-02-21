@@ -1,0 +1,86 @@
+<annotation>
+	<folder>testing_Flanged_tf</folder>
+	<filename>pt$bb1212dp10-s$a$en.jpg</filename>
+	<path>C:\Users\Kaushik Koilada\Documents\Desk\Projects\ggbearings\testImages\testing_Flanged_tf\pt$bb1212dp10-s$a$en.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>8268</width>
+		<height>5846</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Flange Length and Thickness</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>593</xmin>
+			<ymin>1186</ymin>
+			<xmax>1818</xmax>
+			<ymax>1779</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Flange Diameter</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>530</xmin>
+			<ymin>1929</ymin>
+			<xmax>1249</xmax>
+			<ymax>2917</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>Flange Bend Radius</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1087</xmin>
+			<ymin>1686</ymin>
+			<xmax>1612</xmax>
+			<ymax>2211</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>ID Corner Break</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>2462</xmin>
+			<ymin>3479</ymin>
+			<xmax>3043</xmax>
+			<ymax>4161</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>OD Chamfer Length</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1887</xmin>
+			<ymin>4554</ymin>
+			<xmax>2824</xmax>
+			<ymax>4873</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>OD Chamfer Angle</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1512</xmin>
+			<ymin>4023</ymin>
+			<xmax>1862</xmax>
+			<ymax>4817</ymax>
+		</bndbox>
+	</object>
+</annotation>

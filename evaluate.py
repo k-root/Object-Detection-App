@@ -13,7 +13,7 @@ from mrcnn.model import load_image_gt
 from mrcnn.model import mold_image
 
 # class that defines and loads the kangaroo dataset
-class KangarooDataset(Dataset):
+class Dataset(Dataset):
 	# load the dataset definitions
 	def load_dataset(self, dataset_dir, is_train=True):
 		# define one class
@@ -88,7 +88,7 @@ class KangarooDataset(Dataset):
 class PredictionConfig(Config):
 	# define the name of the configuration
 	NAME = "kangaroo_cfg"
-	# number of classes (background + kangaroo)
+	# number of classes (background + kangaroo) +++++ Make this dynamic
 	NUM_CLASSES = 1 + 1
 	# simplify GPU config
 	GPU_COUNT = 1
@@ -116,25 +116,26 @@ def evaluate_model(dataset, model, cfg):
 	mAP = mean(APs)
 	return mAP
 
-# load the train dataset
-train_set = KangarooDataset()
-train_set.load_dataset('kangaroo', is_train=True)
-train_set.prepare()
-print('Train: %d' % len(train_set.image_ids))
-# load the test dataset
-test_set = KangarooDataset()
-test_set.load_dataset('kangaroo', is_train=False)
-test_set.prepare()
-print('Test: %d' % len(test_set.image_ids))
-# create config
-cfg = PredictionConfig()
-# define the model
-model = MaskRCNN(mode='inference', model_dir='./', config=cfg)
-# load model weights
-model.load_weights('mask_rcnn_kangaroo_cfg_0005.h5', by_name=True)
-# evaluate model on training dataset
-train_mAP = evaluate_model(train_set, model, cfg)
-print("Train mAP: %.3f" % train_mAP)
-# evaluate model on test dataset
-test_mAP = evaluate_model(test_set, model, cfg)
-print("Test mAP: %.3f" % test_mAP)
+def run_evaluate():
+    # load the train dataset
+    train_set = Dataset()
+    train_set.load_dataset('kangaroo', is_train=True)
+    train_set.prepare()
+    print('Train: %d' % len(train_set.image_ids))
+    # load the test dataset
+    test_set = Dataset()
+    test_set.load_dataset('kangaroo', is_train=False)
+    test_set.prepare()
+    print('Test: %d' % len(test_set.image_ids))
+    # create config
+    cfg = PredictionConfig()
+    # define the model
+    model = MaskRCNN(mode='inference', model_dir='./', config=cfg)
+    # load model weights
+    model.load_weights('mask_rcnn_kangaroo_cfg_0005.h5', by_name=True)
+    # evaluate model on training dataset
+    train_mAP = evaluate_model(train_set, model, cfg)
+    print("Train mAP: %.3f" % train_mAP)
+    # evaluate model on test dataset
+    test_mAP = evaluate_model(test_set, model, cfg)
+    print("Test mAP: %.3f" % test_mAP)
