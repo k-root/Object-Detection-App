@@ -102,7 +102,8 @@ class Dataset(Dataset):
 		# create masks
 		class_ids = list()
 		for i in range(len(boxes)):
-			box = boxes[i]
+			item = boxes[i]##[name, [coor]]
+			box = item[1]
 			name = item[0]
 			row_s, row_e = box[1], box[3]
 			col_s, col_e = box[0], box[2]
