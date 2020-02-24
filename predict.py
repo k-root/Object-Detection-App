@@ -78,10 +78,10 @@ class Dataset(Dataset):
 			name = obj.find('name').text
 			bndbox = obj.find('bndbox')
 		# for box in root.findall('.//bndbox'):
-			xmin = int(box.find('xmin').text)
-			ymin = int(box.find('ymin').text)
-			xmax = int(box.find('xmax').text)
-			ymax = int(box.find('ymax').text)
+			xmin = int(bndbox.find('xmin').text)
+			ymin = int(bndbox.find('ymin').text)
+			xmax = int(bndbox.find('xmax').text)
+			ymax = int(bndbox.find('ymax').text)
 			coors = [xmin, ymin, xmax, ymax]
 			boxes.append([name, coors])
 		# extract image dimensions
