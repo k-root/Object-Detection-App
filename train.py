@@ -93,16 +93,16 @@ class Dataset(Dataset):
 		# define box file location
 		path = info['annotation']
 		# load XML
-		print("-----------------------annotation path-------------------" + path)
+		#print("-----------------------annotation path-------------------" + path)
 		boxes, w, h = self.extract_boxes(path)
-		print("-----------------------boxes-------------------", boxes)
+		#print("-----------------------boxes-------------------", boxes)
 		# create one array for all masks, each on a different channel
 		masks = zeros([h, w, len(boxes)], dtype='uint8')
 		# create masks
 		class_ids = list()
 		for i in range(len(boxes)):
 			item = boxes[i]##[name, [coor]]
-			print("-----------------------individual box-------------------", item)
+			#print("-----------------------individual box-------------------", item)
 			box = item[1]
 			name = item[0]
 			row_s, row_e = box[1], box[3]
