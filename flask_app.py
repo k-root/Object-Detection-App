@@ -71,9 +71,13 @@ def runTrain():
 def testModel():
     modelName = request.args.get("modelName")
     testFile = request.args.get("testFile")
+    datasetDir = "ggbDataset"
+
+    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
+
 
     # modelName = request.args.get("modelName")
-    predict.predict_main(modelName. testFile)
+    predict.predict_main(datasetDir, modelName, testFile, classes)
     return "test"
 
 @app.route("/evaluate",methods=['GET', 'POST'])
