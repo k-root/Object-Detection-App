@@ -11,6 +11,9 @@ from mrcnn.model import MaskRCNN
 from mrcnn.model import mold_image
 from mrcnn.utils import Dataset
 import math
+import csv
+import cv2
+
 
 # class that defines and loads the kangaroo dataset
 class Dataset(Dataset):
@@ -127,12 +130,16 @@ class PredictionConfig(Config):
 	IMAGES_PER_GPU = 1
 
 # plot a number of photos with ground truth and predictions
-def plot_actual_vs_predicted(dataset, model, cfg, n_images=5):
+def plot_actual_vs_predicted(dataset, model, cfg, n_images=2):
 	# load image and mask
+	writeToCsvList = []
 	for i in range(n_images):
 		# load the image and mask
+		print("=========i in load mask is: "+ str(i))
 		image = dataset.load_image(i)
+		imageName = dataset.source_image_link(i)
 		mask, _ = dataset.load_mask(i)
+		print(imageName)
 		# convert pixel values (e.g. center)
 		scaled_image = mold_image(image, cfg)
 		# convert image into one sample
@@ -140,20 +147,23 @@ def plot_actual_vs_predicted(dataset, model, cfg, n_images=5):
 		# make prediction
 		yhat = model.detect(sample, verbose=0)[0]
 		# define subplot
-		pyplot.subplot(n_images, 2, i*2+1)
-		# plot raw pixel data
-		pyplot.imshow(image)
-		pyplot.title('Actual')
-		# plot masks
-		for j in range(mask.shape[2]):
-			pyplot.imshow(mask[:, :, j], cmap='gray', alpha=0.3)
-		# get the context for drawing boxes
-		pyplot.subplot(n_images, 2, i*2+2)
-		# plot raw pixel data
-		pyplot.imshow(image)
-		pyplot.title('Predicted')
-		ax = pyplot.gca()
-		# plot each box
+		print("Predict function return: ",yhat)
+		# pyplot.subplot(n_images, 2, i*2+1)
+		# # plot raw pixel data
+		
+		# pyplot.imshow(image)
+		# pyplot.title('Actual')
+		# # plot masks
+		# for j in range(mask.shape[2]):
+		# 	pyplot.imshow(mask[:, :, j], cmap='gray', alpha=0.3)
+		# # get the context for drawing boxes
+		# pyplot.subplot(n_images, 2, i*2+2)
+		# # plot raw pixel data
+		# pyplot.imshow(image)
+		# pyplot.title('Predicted')
+		# ax = pyplot.gca()
+		# # plot each box
+		loopNum=0
 		for box in yhat['rois']:
 			# get coordinates
 			y1, x1, y2, x2 = box
@@ -161,10 +171,17 @@ def plot_actual_vs_predicted(dataset, model, cfg, n_images=5):
 			width, height = x2 - x1, y2 - y1
 			# create the shape
 			rect = Rectangle((x1, y1), width, height, fill=False, color='red')
+			predictedLabelID = yhat['class_ids'][loopNum]
+			predictedLabelName = dataset.class_names[predictedLabelID]
 			# draw the box
-			ax.add_patch(rect)
+			# ax.add_patch(rect)
+			# print((x1,y1),(x2,y2))
+			detectedLabel = image[y1:y1+height, x1:x1+width]
+			cv2.imwrite(str(i)+"_"+str(loopNum)+"_"+str(predictedLabelName)+".jpg",detectedLabel)
+			loopNum+=1
+			# writeToCsvList.append([i,])
 	# show the figure
-	pyplot.show()
+	# pyplot.show()
 
 def predict_main(datasetDir, modelName, testFile, classes):
     # load the train dataset
@@ -182,9 +199,9 @@ def predict_main(datasetDir, modelName, testFile, classes):
     # define the model
     model = MaskRCNN(mode='inference', model_dir='./users/user1/dataset/models/', config=cfg)
     # load model weights
-    model_path = 'users/user1/dataset/models/ggb_cfg20200223T1601/mask_rcnn_ggb_cfg_0004.h5'
+    model_path = 'users/user1/dataset/models/mask_rcnn_ggb_cfg_0004.h5'
     model.load_weights(model_path, by_name=True)
     # plot predictions for train dataset
-    plot_actual_vs_predicted(train_set, model, cfg)
+    # plot_actual_vs_predicted(train_set, model, cfg)
     # plot predictions for test dataset
     plot_actual_vs_predicted(test_set, model, cfg)

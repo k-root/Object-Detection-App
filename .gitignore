@@ -2,6 +2,8 @@
 datasets/
 logs/
 *.h5
+*.jpg
+*.xml
 results/
 temp/
 test/
@@ -61,3 +63,4 @@ kangaroo_cfg*/
 users/
 assets/
 samples/
+dataset/
