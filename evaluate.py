@@ -89,7 +89,7 @@ class PredictionConfig(Config):
 	# define the name of the configuration
 	NAME = "kangaroo_cfg"
 	# number of classes (background + kangaroo) +++++ Make this dynamic
-	NUM_CLASSES = 1 + 1
+	NUM_CLASSES = 1 + 13
 	# simplify GPU config
 	GPU_COUNT = 1
 	IMAGES_PER_GPU = 1

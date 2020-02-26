@@ -38,7 +38,7 @@ def runTrain():
     modelName = request.args.get("modelName")
     # classes = request.args.get("classes")
     # dataset_dir = request.args.get("datasetDir")
-    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
+    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
     dirList = os.listdir("./")
     # if modelName in dirList:
     #     #load model
@@ -64,7 +64,7 @@ def runTrain():
     weights = "mask_rcnn_coco.h5"##get this from frontend
 
     # train.training(model_dir,pipeline_config_path,num_train_steps, eval_training_data, checkpoint_dir)
-    dataset_dir = "ggbDataset"####Change to dynamic
+    dataset_dir = "datasets/ggbDatasetStraightFlangedFRC"####Change to dynamic
     train.run_train(dataset_dir, weights, classes)
     return "train"+modelName
 
@@ -73,7 +73,7 @@ def runTrain():
 def testModel():
     modelName = request.args.get("modelName")
     testFile = request.args.get("testFile")
-    datasetDir = "ggbDataset"
+    datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
 
     classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
 
@@ -87,7 +87,7 @@ def testModel():
 def testIndividualModel():
     modelName = request.args.get("modelName")
     testFile = request.args.get("testFile")
-    datasetDir = "ggbDataset"
+    datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
 
     classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
 

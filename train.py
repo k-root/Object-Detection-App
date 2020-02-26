@@ -121,7 +121,7 @@ class KangarooConfig(Config):
 	# define the name of the configuration
 	NAME = "ggb_cfg"####Change to dynamic
 	# number of classes (background + kangaroo)
-	NUM_CLASSES = 1 + 6####Change to dynamic
+	NUM_CLASSES = 1 + 13####Change to dynamic
 	# number of training steps per epoch
 	STEPS_PER_EPOCH = 160####Change to dynamic
 

@@ -4,6 +4,9 @@ logs/
 *.h5
 *.jpg
 *.xml
+*.zip
+
+
 results/
 temp/
 test/
