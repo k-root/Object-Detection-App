@@ -112,7 +112,7 @@ def getModel():
     print(models_list)
     return models_list
 
-@api.route('/zipfile', methods=['POST'])
+@app.route('/zipfile', methods=['POST'])
 def post(self):
     zipFile = request.files['file']
     print(zipFile)
