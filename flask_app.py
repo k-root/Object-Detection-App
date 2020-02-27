@@ -75,7 +75,7 @@ def testModel():
     testFile = request.args.get("testFile")
     datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
 
-    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
+    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
 
 
     # modelName = request.args.get("modelName")
@@ -89,7 +89,7 @@ def testIndividualModel():
     testFile = request.args.get("testFile")
     datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
 
-    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
+    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
 
 
     # modelName = request.args.get("modelName")
@@ -106,7 +106,7 @@ def evaluateModel():
     # testFile = request.args.get("testFile")
     datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
     modelName = "users/user1/dataset/models/ggb_cfg20200226T0858/mask_rcnn_ggb_cfg_0004.h5"
-    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
+    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
     evaluate.run_evaluate(datasetDir, modelName, classes)
     return "evaluate"
 
