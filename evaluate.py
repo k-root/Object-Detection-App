@@ -15,29 +15,61 @@ from mrcnn.model import mold_image
 # class that defines and loads the kangaroo dataset
 class Dataset(Dataset):
 	# load the dataset definitions
-	def load_dataset(self, dataset_dir, is_train=True):
-		# define one class
-		self.add_class("dataset", 1, "kangaroo")
+	def load_dataset(self, dataset_dir, classes, is_train=True):
+		for i in range(len(classes)):
+			self.add_class("dataset", i+1, classes[i])
 		# define data locations
 		images_dir = dataset_dir + '/images/'
 		annotations_dir = dataset_dir + '/annots/'
 		# find all images
-		for filename in listdir(images_dir):
-			# extract image id
-			image_id = filename[:-4]
-			# skip bad images
-			if image_id in ['00090']:
-				continue
-			# skip all images after 150 if we are building the train set
-			if is_train and int(image_id) >= 150:
-				continue
-			# skip all images before 150 if we are building the test/val set
-			if not is_train and int(image_id) < 150:
-				continue
-			img_path = images_dir + filename
-			ann_path = annotations_dir + image_id + '.xml'
-			# add to dataset
-			self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
+		test_train_split = 0.7####train:0.7 test:0.3
+
+		print("images dataset: "+images_dir+ " annotations dataset: "+annotations_dir)
+		images = listdir(images_dir)
+		annotations = listdir(annotations_dir)
+
+		total_dataset_length = len(images)
+		len_train_data = math.ceil(test_train_split*total_dataset_length)
+		len_test_data = total_dataset_length - len_train_data
+
+		print("Total dataset Length: "+ str(total_dataset_length)+"\ntrain length: "+str(len_train_data)+ "\ntest length :"+str(len_test_data))
+
+		if is_train:
+			for filenumber in range(len_train_data):
+				image_id = images[filenumber][:-4]
+				img_path = images_dir + images[filenumber]
+				ann_path = annotations_dir + image_id + '.xml'
+				self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
+		
+		else:
+			for filenumber in range(len_test_data):
+				image_id = images[filenumber][:-4]
+				img_path = images_dir + images[filenumber]
+				ann_path = annotations_dir + image_id + '.xml'
+				self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
+
+		# # define one class
+		# self.add_class("dataset", 1, "kangaroo")
+		# # define data locations
+		# images_dir = dataset_dir + '/images/'
+		# annotations_dir = dataset_dir + '/annots/'
+		# # find all images
+		# for filename in listdir(images_dir):
+		# 	# extract image id
+		# 	image_id = filename[:-4]
+		# 	# skip bad images
+		# 	if image_id in ['00090']:
+		# 		continue
+		# 	# skip all images after 150 if we are building the train set
+		# 	if is_train and int(image_id) >= 150:
+		# 		continue
+		# 	# skip all images before 150 if we are building the test/val set
+		# 	if not is_train and int(image_id) < 150:
+		# 		continue
+		# 	img_path = images_dir + filename
+		# 	ann_path = annotations_dir + image_id + '.xml'
+		# 	# add to dataset
+		# 	self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
 
 	# extract bounding boxes from an annotation file
 	def extract_boxes(self, filename):
@@ -125,12 +157,12 @@ def evaluate_model(dataset, model, cfg):
 def run_evaluate(dataset_dir, modelName, classes):
     # load the train dataset
     train_set = Dataset()
-    train_set.load_dataset(dataset_dir, is_train=True)
+    train_set.load_dataset(dataset_dir, classes, is_train=True)
     train_set.prepare()
     print('Train: %d' % len(train_set.image_ids))
     # load the test dataset
     test_set = Dataset()
-    test_set.load_dataset(dataset_dir, is_train=False)
+    test_set.load_dataset(dataset_dir, classes, is_train=False)
     test_set.prepare()
     print('Test: %d' % len(test_set.image_ids))
     # create config
