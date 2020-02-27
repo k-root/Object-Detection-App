@@ -20,7 +20,7 @@ class PredictionConfig(Config):
 	# define the name of the configuration
 	NAME = "ggb_cfg"
 	# number of classes (background + kangaroo)
-	NUM_CLASSES = 1 + 6
+	NUM_CLASSES = 1 + 13
 	# simplify GPU config
 	GPU_COUNT = 1
 	IMAGES_PER_GPU = 1
@@ -92,7 +92,8 @@ def predict(testFile, modelName, classes):
     # define the model
     model = MaskRCNN(mode='inference', model_dir='./users/user1/dataset/models/', config=cfg)
     # load model weights
-    model_path = 'users/user1/dataset/models/mask_rcnn_ggb_cfg_0004.h5'
+    # model_path = 'users/user1/dataset/models/mask_rcnn_ggb_cfg_0004.h5'
+    model_path = "users/user1/dataset/models/ggb_cfg20200226T0858/mask_rcnn_ggb_cfg_0004.h5"
     model.load_weights(model_path, by_name=True)
     # plot predictions for train dataset
     # plot_actual_vs_predicted(train_set, model, cfg)
