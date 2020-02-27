@@ -125,12 +125,12 @@ def evaluate_model(dataset, model, cfg):
 def run_evaluate(dataset_dir, modelName, classes):
     # load the train dataset
     train_set = Dataset()
-    train_set.load_dataset('kangaroo', is_train=True)
+    train_set.load_dataset(dataset_dir, is_train=True)
     train_set.prepare()
     print('Train: %d' % len(train_set.image_ids))
     # load the test dataset
     test_set = Dataset()
-    test_set.load_dataset('kangaroo', is_train=False)
+    test_set.load_dataset(dataset_dir, is_train=False)
     test_set.prepare()
     print('Test: %d' % len(test_set.image_ids))
     # create config
