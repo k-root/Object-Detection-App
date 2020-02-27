@@ -5,7 +5,7 @@ import requests
 import re
 import json
 import train
-# import evaluate
+import evaluate
 import predict
 import predict_individual
 
@@ -102,7 +102,13 @@ def testIndividualModel():
 @app.route("/evaluate",methods=['GET', 'POST'])
 def evaluateModel():
     # modelName = request.args.get("modelName")
-    return "test"
+    modelName = request.args.get("modelName")
+    # testFile = request.args.get("testFile")
+    datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
+
+    classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
+    evaluate.run_evaluate(datasetDir, modelName, classes)
+    return "evaluate"
 
 
 @app.route("/getModels",methods=['GET', 'POST'])

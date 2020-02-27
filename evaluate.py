@@ -47,13 +47,17 @@ class Dataset(Dataset):
 		root = tree.getroot()
 		# extract each bounding box
 		boxes = list()
-		for box in root.findall('.//bndbox'):
-			xmin = int(box.find('xmin').text)
-			ymin = int(box.find('ymin').text)
-			xmax = int(box.find('xmax').text)
-			ymax = int(box.find('ymax').text)
+		objects = root.findall('.//object')
+		for obj in objects:
+			name = obj.find('name').text
+			bndbox = obj.find('bndbox')
+		# for box in root.findall('.//bndbox'):
+			xmin = int(bndbox.find('xmin').text)
+			ymin = int(bndbox.find('ymin').text)
+			xmax = int(bndbox.find('xmax').text)
+			ymax = int(bndbox.find('ymax').text)
 			coors = [xmin, ymin, xmax, ymax]
-			boxes.append(coors)
+			boxes.append([name, coors])
 		# extract image dimensions
 		width = int(root.find('.//size/width').text)
 		height = int(root.find('.//size/height').text)
@@ -72,11 +76,13 @@ class Dataset(Dataset):
 		# create masks
 		class_ids = list()
 		for i in range(len(boxes)):
-			box = boxes[i]
+			item = boxes[i]##[name, [coor]]
+			box = item[1]
+			name = item[0]
 			row_s, row_e = box[1], box[3]
 			col_s, col_e = box[0], box[2]
 			masks[row_s:row_e, col_s:col_e, i] = 1
-			class_ids.append(self.class_names.index('kangaroo'))
+			class_ids.append(self.class_names.index(name))
 		return masks, asarray(class_ids, dtype='int32')
 
 	# load an image reference
@@ -87,7 +93,7 @@ class Dataset(Dataset):
 # define the prediction configuration
 class PredictionConfig(Config):
 	# define the name of the configuration
-	NAME = "kangaroo_cfg"
+	NAME = "ggb_cfg"
 	# number of classes (background + kangaroo) +++++ Make this dynamic
 	NUM_CLASSES = 1 + 13
 	# simplify GPU config
@@ -116,7 +122,7 @@ def evaluate_model(dataset, model, cfg):
 	mAP = mean(APs)
 	return mAP
 
-def run_evaluate():
+def run_evaluate(dataset_dir, modelName, classes):
     # load the train dataset
     train_set = Dataset()
     train_set.load_dataset('kangaroo', is_train=True)
