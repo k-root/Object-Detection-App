@@ -11,6 +11,7 @@ from mrcnn.utils import Dataset
 from mrcnn.utils import compute_ap
 from mrcnn.model import load_image_gt
 from mrcnn.model import mold_image
+import math
 
 # class that defines and loads the kangaroo dataset
 class Dataset(Dataset):
