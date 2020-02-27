@@ -169,9 +169,11 @@ def run_evaluate(dataset_dir, modelName, classes):
     # create config
     cfg = PredictionConfig()
     # define the model
-    model = MaskRCNN(mode='inference', model_dir='./', config=cfg)
+    model = MaskRCNN(mode='inference', model_dir='./users/user1/dataset/models/', config=cfg)
     # load model weights
-    model.load_weights('mask_rcnn_kangaroo_cfg_0005.h5', by_name=True)
+
+	# modelName = './users/user1/dataset/models/'
+    model.load_weights(modelName, by_name=True)
     # evaluate model on training dataset
     train_mAP = evaluate_model(train_set, model, cfg)
     print("Train mAP: %.3f" % train_mAP)

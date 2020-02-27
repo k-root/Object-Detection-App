@@ -102,10 +102,10 @@ def testIndividualModel():
 @app.route("/evaluate",methods=['GET', 'POST'])
 def evaluateModel():
     # modelName = request.args.get("modelName")
-    modelName = request.args.get("modelName")
+    # modelName = request.args.get("modelName")
     # testFile = request.args.get("testFile")
     datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
-
+    modelName = "users/user1/dataset/models/ggb_cfg20200226T0858/mask_rcnn_ggb_cfg_0004.h5"
     classes = ['ID Corner Break','OD Chamfer Length','OD Chamfer Angle','Flange Length and Thickness','Flange Diameter','Flange Bend Radius']
     evaluate.run_evaluate(datasetDir, modelName, classes)
     return "evaluate"
