@@ -40,32 +40,24 @@ def runTrain():
     # dataset_dir = request.args.get("datasetDir")
     classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
     dirList = os.listdir("./")
-    # if modelName in dirList:
-    #     #load model
-    #     pass
-    # else:
-    #     #download from zoo
-    #     pass
-    # model = load_model(modelName)
-    # print(model)
 
     print(dirList)
-    model_dir = "training"####Change to dynamic
+    # model_dir = "training"####Change to dynamic
     # pipeline_config_path = "training/ssd_mobilenet_v2_coco.config"####Change to dynamic
-    num_train_steps = None
-    eval_training_data=False
-    if not eval_training_data:
-        checkpoint_dir=None
-    else:
-        os.mkdir("checkpoint/"+modelName)
-    if model_dir not in dirList or not os.path.isdir(model_dir):
-        os.mkdir("training")
+    # num_train_steps = None
+    # eval_training_data=False
+    # if not eval_training_data:
+    #     checkpoint_dir=None
+    # else:
+    #     os.mkdir("checkpoint/"+modelName)
+    # if model_dir not in dirList or not os.path.isdir(model_dir):
+    #     os.mkdir("training")
 
     weights = "mask_rcnn_coco.h5"##get this from frontend
 
     # train.training(model_dir,pipeline_config_path,num_train_steps, eval_training_data, checkpoint_dir)
     dataset_dir = "datasets/ggbDatasetStraightFlangedFRC"####Change to dynamic
-    train.run_train(dataset_dir, weights, classes)
+    train.run_train(dataset_dir, weights, classes, numEpochs=10, learningRate=0.001)
     return "train"+modelName
 
 

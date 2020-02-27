@@ -12,7 +12,8 @@ from mrcnn.utils import Dataset
 import math
 import csv
 import cv2
-
+import os
+import os.path
 
 # define the prediction configuration
 class PredictionConfig(Config):
@@ -71,7 +72,7 @@ def predictImage(imageName, model, cfg, classes):
         # ax.add_patch(rect)
         # print((x1,y1),(x2,y2))
         detectedLabel = image[y1:y1+height, x1:x1+width]
-        cv2.imwrite(str(imageName).split(".")[0]+"_"+str(loopNum)+"_"+str(classes[predictedLabelID-1])+".jpg",detectedLabel)
+        cv2.imwrite("imageGGBTest/"+str(imageName).split(".")[0]+"/"+str(classes[predictedLabelID-1])+".jpg",detectedLabel)
         loopNum+=1
 
 
@@ -98,3 +99,17 @@ def predict(testFile, modelName, classes):
     # plot predictions for test dataset
     # plot_actual_vs_predicted(test_set, model, cfg)
     predictImage(testFile, model, cfg, classes)
+
+if __name__ == "__main__":
+    dirFiles = os.listdir("imageGGBTest")  
+    # imageFiles = []
+    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
+    modelName = "ggb"
+
+    for files in dirFiles:
+        if not os.path.isdir(files):
+            # imageFiles.append(files)
+            testFile = files
+            predict(testFile, modelName, classes)
+    # testFile = r"imageGGBTest\image3\pt$bb1212du-p1$a$en.jpg"
+    

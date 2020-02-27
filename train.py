@@ -123,11 +123,11 @@ class KangarooConfig(Config):
 	# number of classes (background + kangaroo)
 	NUM_CLASSES = 1 + 13####Change to dynamic
 	# number of training steps per epoch
-	STEPS_PER_EPOCH = 160####Change to dynamic
+	STEPS_PER_EPOCH = 96####Change to dynamic
 
 # prepare train set
 
-def run_train(datasetDir, modelWeight, classes):
+def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate):
 	train_set = Dataset()
 	train_set.load_dataset(datasetDir, classes,  is_train=True)####Change to dynamic
 	train_set.prepare()
@@ -152,4 +152,8 @@ def run_train(datasetDir, modelWeight, classes):
 	# load weights (mscoco) and exclude the output layers
 	model.load_weights(modelWeight, by_name=True, exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",  "mrcnn_bbox", "mrcnn_mask"])
 	# train weights (output layers or 'heads')
-	model.train(train_set, test_set, learning_rate=config.LEARNING_RATE, epochs=5, layers='heads')
+	if(learningRate==0 or not learningRate):
+		learningRate=config.LEARNING_RATE
+	if(numEpochs==0 or not numEpochs):
+		numEpochs=5
+	model.train(train_set, test_set, learning_rate=learningRate, epochs=numEpochs, layers='heads')
