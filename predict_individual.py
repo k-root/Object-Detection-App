@@ -59,6 +59,8 @@ def predictImage(imageName, model, cfg, classes):
     # ax = pyplot.gca()
     # # plot each box
     loopNum=0
+    if not os.path.isdir(str(imageName).split(".")[0]):
+        os.mkdir(str(imageName).split(".")[0])
     for box in yhat['rois']:
         # get coordinates
         y1, x1, y2, x2 = box
@@ -72,11 +74,12 @@ def predictImage(imageName, model, cfg, classes):
         # ax.add_patch(rect)
         # print((x1,y1),(x2,y2))
         detectedLabel = image[y1:y1+height, x1:x1+width]
-        cv2.imwrite("imageGGBTest/"+str(imageName).split(".")[0]+"/"+str(classes[predictedLabelID-1])+".jpg",detectedLabel)
+        cv2.imwrite(str(imageName).split(".")[0]+"/"+str(classes[predictedLabelID-1])+".jpg",detectedLabel)
         loopNum+=1
 
 
 def predict(testFile, modelName, classes):
+    print("entered predict for "+testFile)
     # load the train dataset
     # train_set = Dataset()
     # train_set.load_dataset(datasetDir, classes, is_train=True)
@@ -93,7 +96,7 @@ def predict(testFile, modelName, classes):
     model = MaskRCNN(mode='inference', model_dir='./users/user1/dataset/models/', config=cfg)
     # load model weights
     # model_path = 'users/user1/dataset/models/mask_rcnn_ggb_cfg_0004.h5'
-    model_path = "users/user1/dataset/models/ggb_cfg20200226T0858/mask_rcnn_ggb_cfg_0004.h5"
+    model_path = "users/user1/dataset/models/ggb_cfg20200226/mask_rcnn_ggb_cfg_0004.h5"
     model.load_weights(model_path, by_name=True)
     # plot predictions for train dataset
     # plot_actual_vs_predicted(train_set, model, cfg)
@@ -102,15 +105,17 @@ def predict(testFile, modelName, classes):
     predictImage(testFile, model, cfg, classes)
 
 if __name__ == "__main__":
-    dirFiles = os.listdir("imageGGBTest")  
+    imagesDir = "imageGGBTest/"
+    dirFiles = os.listdir(imagesDir)  
     # imageFiles = []
     classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
     modelName = "ggb"
 
     for files in dirFiles:
-        if not os.path.isdir(files):
+        if not os.path.isdir(imagesDir+files):
             # imageFiles.append(files)
-            testFile = files
+            print(files)
+            testFile = imagesDir+files
             predict(testFile, modelName, classes)
     # testFile = r"imageGGBTest\image3\pt$bb1212du-p1$a$en.jpg"
     

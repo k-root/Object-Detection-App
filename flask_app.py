@@ -12,6 +12,8 @@ import predict_individual
 import os
 app = Flask(__name__)
 app.config["DEBUG"]=True
+CORS(app)
+
 import tensorflow.compat.v1 as tf
 import pathlib
 
@@ -32,10 +34,30 @@ def load_model(model_name):
 
   return model
  
+def unzipDataset(zipFileName):
+    import zipfile
+    path_to_zip_file = "dataset/"+zipFileName
+    directory_to_extract_to = "datasets/"
+    with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
+        zip_ref.extractall(directory_to_extract_to)
+    return directory_to_extract_to+zipFileName.split(".")[0]
 
 @app.route("/train",methods=['GET', 'POST'])
 def runTrain():
-    modelName = request.args.get("modelName")
+    # modelName = request.args.get("modelName")
+    data = request.json.get("modelInput")
+    print(data)
+            # {'importClassCount': 1, 'importClasses': {'0': '2'},
+            # 'importFolder': 'Type 3 (FRC)-20200225T105311Z-001.zip', 'select': 'chooseTrain',
+            # 'selectModelName': 'mask_rcnn_kangaroo_cfg_0005.h5', 'epochs': 1,
+            # 'learningRate': 0.1}
+    numClasses = data['importClassCount']
+    dataset_dir = unzipDataset(data['importFolder'])
+    datasetName = data['importFolder'].split(".")[0]
+    numEpochs = data['epochs']
+    learningRate = data['learningRate']
+    modelSelected = data['selectModelName']
+    weights = "models/"+modelSelected
     # classes = request.args.get("classes")
     # dataset_dir = request.args.get("datasetDir")
     classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
@@ -53,12 +75,16 @@ def runTrain():
     # if model_dir not in dirList or not os.path.isdir(model_dir):
     #     os.mkdir("training")
 
-    weights = "mask_rcnn_coco.h5"##get this from frontend
+    # weights = "mask_rcnn_coco.h5"##get this from frontend
 
     # train.training(model_dir,pipeline_config_path,num_train_steps, eval_training_data, checkpoint_dir)
-    dataset_dir = "datasets/ggbDatasetStraightFlangedFRC"####Change to dynamic
-    train.run_train(dataset_dir, weights, classes, numEpochs=10, learningRate=0.001)
-    return "train"+modelName
+    # dataset_dir = "datasets/ggbDatasetStraightFlangedFRC"####Change to dynamic
+    if numEpochs==0 or not numEpochs:
+        numEpochs = 10
+    if learningRate==0 or not learningRate:
+        learningRate = 0.001
+    train.run_train(dataset_dir, weights, classes, numEpochs, learningRate)
+    return json.dumps("train")
 
 
 @app.route("/test",methods=['GET', 'POST'])
@@ -103,25 +129,43 @@ def evaluateModel():
     return "evaluate"
 
 
-@app.route("/getModels",methods=['GET', 'POST'])
-def getModel():
-    # modelName = request.args.get("modelName")
-    models_list = os.listdir("models")
-    print(models_list)
-    return models_list
+# @app.route("/getModels",methods=['GET'])
+# def getModel():
+#     # modelName = request.args.get("modelName")
+#     models_list = os.listdir("models")
+#     print(models_list)
+#     return json.dumps({"models":models_list})
 
 @app.route('/zipfile', methods=['POST'])
-def post(self):
-    zipFile = request.files['file']
-    print(zipFile)
-    zipFile.save(r"./dataset/"+ zipFile.name)
-    # print(request.json.get("files")) 
-    # print('-------------------------------')
-    # print(request.json.get("file_content"))
-    print('-------------------------------')
-    print('-------------------------------')
+def post():
+    try:
+        zipFile = request.files['file']
+        zipFileName = zipFile.filename
+        print(zipFileName)
+        if zipFileName.split(".")[1]=="zip":
+            zipFile.save(r"./dataset/"+ zipFileName)
+        else:
+            return json.dumps("Not a Zip")
+        # print(request.json.get("files")) 
+        # print('-------------------------------')
+        # print(request.json.get("file_content"))
+        print('-------------------------------')
+        print('-------------------------------')
+        return json.dumps('{"success"}')
+    except expression as identifier:
+        return json.dumps('{"Fail"}')
     # print(request.data.getvalue())
-    return "-file-"
+    
+@app.route('/getModelNames', methods=['GET'])
+def getModelNames():
+    modelsList = os.listdir("models")
+    returnResp = []
+    for model in modelsList:
+        fileExt = model.split(".")[1]
+        if fileExt in ["h5","pb"]:
+            returnResp.append(model)
+            print(model)
+    return json.dumps(returnResp)
 
 # @app.route("/evaluate",methods=['GET', 'POST'])
 # def evaluateModel():
