@@ -64,6 +64,7 @@ ENV/
 
 kangaroo_cfg*/
 users/
-assets/
+
 samples/
 angular/node_modules
+angular/src/assets/img
