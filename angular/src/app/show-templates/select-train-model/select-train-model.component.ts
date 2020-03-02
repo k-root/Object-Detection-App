@@ -21,7 +21,7 @@ export class SelectTrainModelComponent implements OnInit {
   importFolder;
   enableNext:boolean=false;
   globalStr = "from select train";
-  modelTraining:boolean=false;
+  modelTraining;
   models=["Model 1","Model 2","Model 3"]
   constructor(private router: Router , private toastr:ToastrManager , private apiservice :ApiService) { }
 
@@ -29,6 +29,9 @@ export class SelectTrainModelComponent implements OnInit {
     console.log(this.header,"-----------------------------------------------------------");
     console.log(this.globalStr);
     this.header=JSON.parse(this.header)
+    if(Object.keys(this.header).includes("modelTraining")){
+      this.modelTraining = this.header["modelTraining"];
+    }
     if(Object.keys(this.header).includes("importClasses")){
       this.importClasses = this.header["importClasses"];
     }
@@ -101,7 +104,7 @@ export class SelectTrainModelComponent implements OnInit {
       
       if(this.trainSelect)
       {
-         this.router.navigate(['/show'],{ queryParams: {'evaluateSelect': JSON.stringify(true),'epochs':JSON.stringify(this.epoch),'learningRate':JSON.stringify(this.learningRate)} });
+         this.router.navigate(['/show'],{ queryParams: {'evaluateSelect': JSON.stringify(true),'epochs':JSON.stringify(this.epoch),'learningRate':JSON.stringify(this.learningRate),'modelTraining':JSON.stringify(this.modelTraining)} });
       }
     }
   }

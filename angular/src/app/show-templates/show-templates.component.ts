@@ -43,6 +43,7 @@ export class ShowTemplatesComponent implements OnInit {
   trainModelInput={};
   importClasses; importclassCount;
   selectModelName;
+  modelTraining;
   editImport:boolean=false;
   epoch;learningRate;
   jsonStringify = JSON.stringify;
@@ -89,8 +90,10 @@ export class ShowTemplatesComponent implements OnInit {
           this.traverse=true;
           this.epoch=JSON.parse(params.get('epochs'));
           this.learningRate=JSON.parse(params.get('learningRate'));
+          this.modelTraining=JSON.parse(params.get('modelTraining'))
           this.trainModelInput["epochs"] = this.epoch;
           this.trainModelInput["learningRate"] = this.learningRate;
+          this.trainModelInput["modelTraining"] = this.modelTraining;
           console.log("results from train component",this.trainModelInput)
           this.apiservice.getTrainResults(this.trainModelInput).subscribe(
             resp=>{

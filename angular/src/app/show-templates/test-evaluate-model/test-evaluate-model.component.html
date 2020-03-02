@@ -1,3 +1,25 @@
-<p>
-  test-evaluate-model works!
-</p>
+<div style="width: 100%;height:100%;margin-left: 15px;" class="main-test" >
+
+  <div class="fileinput fileinput-new text-center" data-provides="fileinput" *ngIf="testModel">
+
+    <!-- <div class="fileinput-preview fileinput-exists thumbnail"></div> -->
+    <div>
+      <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px;">
+        <span class="fileinput-new">Upload Document</span>
+        <span class="fileinput-exists">Change</span>
+        <input type="file"  id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" />
+      </span>
+
+      <!-- <a href="javascript:void(0)" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"
+        (click)="removeTemplateImage()"><i class="fa fa-times"></i> Remove</a> -->
+      <!-- <div> -->
+      <!-- <span> OR </span> -->
+      <!-- <span class="btn btn-rose btn-round btn-file" (click)="getSampleImage()">Get Sample Image</span> -->
+      <!-- </div> -->
+    </div>
+
+  </div>
+  <div class="card-body" style="overflow-y: scroll !important;height: 600px;">
+    <img id="blah" [src]="document"  [alt]='imageAlt' style="max-height: 100%;" />
+    </div>
+</div>

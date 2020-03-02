@@ -68,18 +68,18 @@ export class ApiService {
 
   getUnzippedFiles(formData){
     this.init();
-    return this.http.post(`${this.BASE_URL}/zipfile`, formData,this.requestOptions);
+    return this.http.post(`${this.BASE_URL}/api/zipfile`, formData,this.requestOptions);
   }
 
   getModelNames():Observable<any>{
     this.init();
-    return this.http.get(`${this.BASE_URL}/getModelNames`,this.requestOptions);
+    return this.http.get(`${this.BASE_URL}/api/getModelNames`,this.requestOptions);
   }
 
   getTrainResults(modelInput):Observable<any>{
     this.init();
     console.log(modelInput, "entered train result")
-    return this.http.post(`${this.BASE_URL}/train`,{modelInput},this.requestOptions);
+    return this.http.post(`${this.BASE_URL}/api/train`,{modelInput},this.requestOptions);
   }
 
   getSampleImagesByType(templateType):Observable<any>{

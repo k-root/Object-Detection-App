@@ -24,6 +24,7 @@ export class ImportModelComponent implements OnInit {
   classCountCheck;
   importClassesCheck={};
   fileNameCheck;
+  extension;
   constructor(private apiservice: ApiService,private toastr:ToastrManager,private router: Router,) { 
     // this.router.routeReuseStrategy.shouldReuseRoute = function(){
     //   return false;
@@ -56,8 +57,8 @@ export class ImportModelComponent implements OnInit {
     formData.append('file', files[0], files[0].name);
     this.files = files;
     this.fileName = files[0].name
-    let extension = this.fileName.split(".")[1]
-    if(extension!="zip"){
+    this.extension = this.fileName.split(".")[1]
+    if(this.extension!="zip"){
       this.toastr.errorToastr("Please Upload a Zip File Only!", "Error")
       this.errorFileUpload=true;
     }
@@ -118,7 +119,7 @@ onClickContinue(){
     this.toastr.errorToastr('Upload Dataset', );
     // this.toastr.warningToastr('Upload Dataset', );
   }
-  else if((count==this.classCount) && (this.fileName)){
+  else if((count==this.classCount) && (this.fileName) && (this.extension == 'zip')){
     this.modelSelect=true;
     console.log(this.class)
     
@@ -133,7 +134,7 @@ onClickContinue(){
           
         }      
     }
-  }
+  
     if(check==this.classCount){
       window.location.reload();
     }
@@ -145,6 +146,7 @@ onClickContinue(){
     }// this.router.navigated=false;
     console.log("next")
     // window.location.reload();
+  }
   
 }
 }

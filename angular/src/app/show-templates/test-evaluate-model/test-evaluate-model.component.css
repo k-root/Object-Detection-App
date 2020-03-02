@@ -1,0 +1,19 @@
+.buttonB{
+    border-radius: 5px;
+    color: #828485; 
+    background-color: #e8e5e5;
+    border-color: #dbdcdd !important;
+    border: solid;
+}
+.buttonB:hover{
+    color: whitesmoke;
+    background-color: cornflowerblue;
+    border-color: rgb(90, 141, 236) !important;
+    border: solid;
+}
+
+.main-test .perfect-scrollbar-on {
+    height: 100%;
+    max-height: 100%;
+    overflow-y: scroll;
+}
