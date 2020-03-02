@@ -8,7 +8,8 @@ import { ResponseType } from '@angular/http';
   providedIn: 'root'
 })
 export class ApiService {
-  BASE_URL: string = window.location.pathname;
+  // BASE_URL: string = window.location.pathname;
+  BASE_URL: string = ''
   API_URL = `${this.BASE_URL}/api`;
   SAMPLE_IMAGES_URL = `${this.API_URL}/sample`
   INTEGRATION_URL = `${this.API_URL}/integration`;

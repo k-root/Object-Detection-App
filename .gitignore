@@ -66,4 +66,6 @@ kangaroo_cfg*/
 users/
 
 samples/
-angular/node_modules
+angular/node_modules/
+
+imageGGBTest/
