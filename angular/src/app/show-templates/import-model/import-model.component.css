@@ -1,0 +1,52 @@
+.classcount{
+    padding: 5px 2px;
+    margin: 8px 0;
+    margin-left: 8px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+.classnames{
+    width: 100%;
+    padding: 10px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+.card {
+    height: 22em;
+    overflow-y: scroll;
+    border-radius: unset;
+    /* margin-left: 10px; */
+    padding: 1%;
+    box-shadow: unset;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+.buttonB{
+    border-radius: 5px;
+    color: #828485;
+    background-color: #e8e5e5;
+    border-color: #dbdcdd !important;
+    border: solid;
+}
+.buttonB:hover{
+    color: whitesmoke;
+    background-color: cornflowerblue;
+    border-color: rgb(90, 141, 236) !important;
+    border: solid;
+}

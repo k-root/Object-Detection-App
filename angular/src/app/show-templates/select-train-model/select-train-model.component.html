@@ -1,0 +1,111 @@
+<div style="width: 100%;float: left;" *ngIf="modelSelect">
+  <!-- <button style="float:unset;margin-right: 100px;" class="btn btn-default" (click)=displayModels()>Select Model</button> -->
+  <!-- <label>Select Model :</label> -->
+
+  <!-- <select id="model" style="margin-left:20px;background: #759797;
+  border-radius: 5px;" *ngIf="modelSelect">
+    <option value="model1">Model 1</option>
+    <option value="model2">Model 2</option>
+    <option value="model3">Model 3</option>
+    <option value="model4">Model 4</option>
+  </select> -->
+  <table style="margin-left: 10px;margin-bottom: 10px;">
+
+    <tr *ngFor="let model of models; let i = index" (click)="onSelectModel(i)" [class.active]="i == selectedRow"
+      [class.highlighted]="model === currentModel" id={{i}}>
+      <a style="cursor: pointer;">{{model}}</a></tr>
+
+    <!-- <tr>
+      <td>Model 2</td>
+      
+    </tr>
+    <tr>
+      <td>Model 3</td>
+     
+    </tr>
+    <tr>
+      <td>Model 4</td>
+      
+    </tr>
+    <tr>
+      <td>Model 5</td>
+      
+    </tr>
+    <tr>
+      <td>Model 6</td>
+      
+    </tr> -->
+  </table>
+  <div *ngIf="enableNext">
+    <button class="buttonB" style="margin-left: 10px;" (click)="onClickContinue()">save</button>
+  </div>
+</div>
+
+<div style="margin-left: 20px;width: 100%;" *ngIf="trainSelect">
+  <table style="width: 30%; ">
+    <tr style="border-bottom:0">
+      <td style="border-bottom:0">
+        <label style="float:unset;margin-right: 10px;color: grey;" >Number of epochs</label> 
+        
+      </td>
+      <td style="border-bottom:0">
+        <input class="epochRate" type="number" min="0" id="nclass" name="nclass" [(ngModel)]="epoch"  style="width: 30%;
+        height: 10%;">
+        </td>
+    </tr>
+    <tr style="border-bottom: 0;">
+      <td style="border-bottom:0">
+        <label style="float:unset;margin-right: 10px;color: grey;" >Learning Rate</label> 
+        
+      </td>
+      <td style="border-bottom:0">
+        <input class="epochRate" type="number" min="0" step="0.00001" max="1" id="nclass" name="nclass" [(ngModel)]="learningRate" style="width: 30%;
+    height: 10%;">
+        </td>
+    </tr>
+  </table>
+  <!-- <label style="float:unset;margin-right: 10px;color: grey;" >Number of epochs</label> 
+  <input class="epochRate" type="number" min="0" id="nclass" name="nclass" [(ngModel)]="epoch"  style="width: 5%;
+    height: 10%;"><br>
+    <label style="float:unset;margin-right: 10px;color: grey;" >Learning Rate</label> 
+    <input class="epochRate" type="number" min="0" step="0.00001" max="1" id="nclass" name="nclass" [(ngModel)]="learningRate" style="width: 5%;
+    height: 10%;"><br> -->
+    <hr style="background-color: cornsilk;">
+  <div style="width: 100%;margin-bottom: 20px;" >
+    <label style="float:unset;margin-right: 100px;color: grey;" >Uploaded Dataset : {{importFolder}} </label><br>
+  </div>
+  <hr style="background-color: cornsilk;">
+  <!-- <button style="float:unset;margin-right: 100px;" class="btn btn-default" (click)="onSelectModel(i)">Train Model</button> -->
+  <div style="width: 100%;margin-bottom: 20px;">
+    <label style="float:unset;margin-right: 100px;color: grey;">Number of Classes : {{importclassCount}}</label><br>
+
+  </div>
+
+  <hr style="background-color: cornsilk;">
+  <!-- <label style="float:unset;margin-right: 10px;color: grey;" >Number of classes</label> <input class="classcount" type="text" id="nclass" name="nclass" [(ngModel)]="classCount" style="width: 5%;
+    height: 10%;">
+    <hr style="background-color: cornsilk;"> -->
+    <label style="float:unset;margin-right: 100px;color: grey;">Class Names</label>
+  <div *ngIf="importclassCount">
+    
+
+    <div *ngFor="let class of objectKeys(importClasses); let i = index" style="width: 20%;color: #686363;">
+      Class {{i+1}} - {{importClasses[class]}}
+    </div>
+
+
+    <!-- <button class="buttonB" style="margin-left: 10px;" (click)="onClickContinue()" >save</button> -->
+  </div>
+  <hr style="background-color: cornsilk;"> 
+  <div style="width: 100%;margin-bottom: 20px;">
+    <label style="float:unset;margin-right: 100px;color: grey;">Model Selected : {{selectModelName}}</label><br>
+  </div>
+  <button class="buttonB" style="margin-left: 10px;" *ngIf="!(modelTraining)" (click)="onClickNext()">Train</button>
+ <span style="display: inline-flex;" *ngIf="modelTraining">
+    <button class="buttonM" style="margin-left: 10px;" >Model Training...</button><mat-spinner  diameter="20" style="margin-left: 30px;margin-top: 5px;stroke: mediumblue;"
+    ></mat-spinner></span>
+   
+
+    <!-- <button class="buttonB" style="margin-left: 40%;" (click)="onClickContinue()" *ngIf="enableNext">Train</button> -->
+  
+</div>

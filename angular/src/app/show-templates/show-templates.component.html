@@ -1,0 +1,90 @@
+<div class="main-content" style="background: white;padding: 0px;    margin-top: 60px;
+position: fixed;
+width: 100%;
+height: 100%;">
+  <!-- <div class="card-header"> -->
+              <!-- collapse navbar -->
+              
+        
+    <!-- <h5 class="card-title">Settlement Report Query Submit</h5> -->
+    <ul class="nav nav-tabs card-header-tabs" id="bologna-list" role="tablist" style="margin-left: 10px;">
+      <li class="nav-item {{import_}}" id="Import">
+        <a class="nav-link" (click)="ImportData()">Import Dataset</a>
+      </li>
+      <li class="nav-item {{select_}}"  id="Select">
+        <a class="nav-link" (click)="ModelSelect()"
+        >Select Model</a>
+      </li>
+      <li class="nav-item {{Train_}}">
+        <a class="nav-link" (click)="TrainModel()">Train Model</a>
+      </li>
+      <li class="nav-item {{Eval_}}">
+        <a class="nav-link" (click)="Evaluate()">Evaulate
+          Model</a>
+      </li> 
+      <li class="nav-item {{test_}}">
+        <a class="nav-link" (click)="TestandDeploy()">Test & Deploy
+          Model</a>
+      </li>
+    </ul>
+    <hr>
+  <!-- </div> -->
+  <!-- <div class="card-body"> -->
+    <div *ngIf="importSelect">
+    <div *ngIf="!(importclassCount && importClasses)">
+      
+      <div *ngIf="!(editImport)">
+        
+        <app-import-model></app-import-model>
+      </div>
+      <div *ngIf="(editImport)">
+        
+        <app-import-model header ={{jsonStringify(trainModelInput)}} ></app-import-model>
+      </div>
+    </div>
+    <div *ngIf="(importclassCount && importClasses)" style="margin-left: 20px;">
+            <div>
+            <button class="buttonB" style="margin-left: 70%;" (click)="editImportModel()" >edit</button>
+            </div>
+              <div style="width: 100%;margin-bottom: 20px;" >
+                <label style="float:unset;margin-right: 100px;color: grey;" >Uploaded Dataset : {{importFolder}}</label><br>
+              </div>
+
+            <hr style="background-color: cornsilk;">
+            <label style="float:unset;margin-right: 10px;color: grey;" >Number of classes</label> {{importclassCount}}
+            <hr style="background-color: cornsilk;">
+            
+              <label style="float:unset;margin-right: 100px;color: grey;" >Class Names</label>
+                
+                  <div  *ngFor="let class of objectKeys(importClasses); let i = index" style="width: 20%;">
+                    Class {{i+1}} {{importClasses[class]}}
+                  </div>
+                
+            
+    </div>
+    </div>
+  <div *ngIf="modelSelect">
+    <div *ngIf="!(selectModelName)">
+          <app-select-train-model header={{jsonStringify(trainModelInput)}} ></app-select-train-model>
+    </div>
+    <div *ngIf="(selectModelName)" style="margin-left: 20px;">
+      <div>
+      <button class="buttonB" style="margin-left: 70%;" (click)="editSelectModel()" >edit</button>
+      </div>
+        <div style="width: 100%;margin-bottom: 20px;" >
+          <label style="float:unset;margin-right: 100px;color: grey;" >Model Selected : {{selectModelName}}</label><br>
+        </div>
+    </div>
+  </div>
+  <div *ngIf="trainSelect">
+    <app-select-train-model header={{jsonStringify(trainModelInput)}}></app-select-train-model>
+  </div>
+  <div *ngIf="evaluateSelect">
+    <app-test-evaluate-model header="chooseEvaluate"></app-test-evaluate-model>
+  </div>
+  <div *ngIf="testSelect">
+    <app-test-evaluate-model header="chooseTest"></app-test-evaluate-model>
+  </div>
+    
+  </div>
+<!-- </div> -->

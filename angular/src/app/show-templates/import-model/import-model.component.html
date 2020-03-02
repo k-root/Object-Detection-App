@@ -1,0 +1,36 @@
+
+  <div style="width: 100%;height:100%;margin-left: 15px;">
+
+    <div style="width: 100%;margin-bottom: 20px;" *ngIf="((!(fileName) || changeFile))">
+      <label style="float:unset;margin-right: 100px;color: grey;" >Upload Data</label><br>
+      <input type="file" style="color:grey;" (change)="upload($event.target.files)" />
+    <!-- Upload Percent: {{percentDone}}%  -->
+    </div>
+    <div style="width: 100%;margin-bottom: 20px;" *ngIf="((fileName)&&!(changeFile))">
+      <label style="float:unset;margin-right: 100px;color: grey;" >Uploaded Data : {{fileName}}</label>
+      <button class="buttonB" style="margin-left: 10px;" (click)="changeDataset()">Change Dataset</button>
+    <!-- Upload Percent: {{percentDone}}%  -->
+    </div>
+
+    <hr style="background-color: cornsilk;">
+    <label style="float:unset;margin-right: 10px;color: grey;" >Number of classes</label> <input class="classcount" type="number" min="0" id="nclass" name="nclass" [(ngModel)]="classCount" [value]="classCount" style="width: 5%;
+    height: 10%;">
+    <hr style="background-color: cornsilk;">
+    <div  *ngIf="classCount">
+      <label style="float:unset;margin-right: 100px;color: grey;" >Class Names</label>
+        <div class="card" *ngIf="!(header)">
+          <div  *ngFor="let item of counter(+classCount); let i = index" style="width: 20%;">
+            <!-- {{i+1}} -->
+            <input class= "classnames" type="text" [(ngModel)]="class[i]" placeholder="class {{i+1}}" required>
+          </div>
+        </div>
+        <div class="card" *ngIf="(header)">
+          <div  *ngFor="let item of counter(+classCount); let i = index" style="width: 20%;">
+          <input class= "classnames" type="text" [(ngModel)]="class[i]" [value]="class[i]" required >
+          </div>
+        </div>
+    
+      <button class="buttonB" style="margin-left: 10px;" (click)="onClickContinue()" >save</button>
+    </div>
+  
+  </div>
