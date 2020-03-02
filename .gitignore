@@ -2,7 +2,7 @@
 datasets/
 logs/
 *.h5
-*.jpg
+
 *.xml
 *.zip
 
@@ -28,7 +28,7 @@ eggs/
 lib/
 lib64/
 parts/
-sdist/
+
 var/
 wheels/
 *.egg-info/
@@ -67,4 +67,3 @@ users/
 
 samples/
 angular/node_modules
-angular/src/assets/img
