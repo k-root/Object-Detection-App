@@ -143,6 +143,8 @@ def post():
         zipFileName = zipFile.filename
         print(zipFileName)
         if zipFileName.split(".")[1]=="zip":
+            if not os.path.isdir("dataset"):
+                os.mkdir("dataset")
             zipFile.save(r"./dataset/"+ zipFileName)
         else:
             return json.dumps("Not a Zip")
@@ -152,7 +154,7 @@ def post():
         print('-------------------------------')
         print('-------------------------------')
         return json.dumps('{"success"}')
-    except expression as identifier:
+    except:
         return json.dumps('{"Fail"}')
     # print(request.data.getvalue())
     
