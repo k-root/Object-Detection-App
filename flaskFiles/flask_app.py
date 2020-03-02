@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, Blueprint, send_from_directory, request
+from flask import current_app, Flask, redirect, url_for, Blueprint, send_from_directory, render_template, request, Response
 from flask_cors import CORS
 import requests
 import re
@@ -10,9 +10,9 @@ import predict
 import predict_individual
 
 import os
-app = Flask(__name__)
-app.config["DEBUG"]=True
-CORS(app)
+
+flask_app = Blueprint('flask_app', __name__)
+
 
 import tensorflow.compat.v1 as tf
 import pathlib
@@ -42,7 +42,7 @@ def unzipDataset(zipFileName):
         zip_ref.extractall(directory_to_extract_to)
     return directory_to_extract_to+zipFileName.split(".")[0]
 
-@app.route("/train",methods=['GET', 'POST'])
+@flask_app.route("/train",methods=['GET', 'POST'])
 def runTrain():
     # modelName = request.args.get("modelName")
     data = request.json.get("modelInput")
@@ -87,7 +87,7 @@ def runTrain():
     return json.dumps("train")
 
 
-@app.route("/test",methods=['GET', 'POST'])
+@flask_app.route("/test",methods=['GET', 'POST'])
 def testModel():
     modelName = request.args.get("modelName")
     testFile = request.args.get("testFile")
@@ -101,7 +101,7 @@ def testModel():
     return "test"
 
 
-@app.route("/testIndividual",methods=['GET', 'POST'])
+@flask_app.route("/testIndividual",methods=['GET', 'POST'])
 def testIndividualModel():
     modelName = request.args.get("modelName")
     testFile = request.args.get("testFile")
@@ -117,7 +117,7 @@ def testIndividualModel():
     return "test individual"
 
 
-@app.route("/evaluate",methods=['GET', 'POST'])
+@flask_app.route("/evaluate",methods=['GET', 'POST'])
 def evaluateModel():
     # modelName = request.args.get("modelName")
     # modelName = request.args.get("modelName")
@@ -136,7 +136,7 @@ def evaluateModel():
 #     print(models_list)
 #     return json.dumps({"models":models_list})
 
-@app.route('/zipfile', methods=['POST'])
+@flask_app.route('/zipfile', methods=['POST'])
 def post():
     try:
         zipFile = request.files['file']
@@ -156,7 +156,7 @@ def post():
         return json.dumps('{"Fail"}')
     # print(request.data.getvalue())
     
-@app.route('/getModelNames', methods=['GET'])
+@flask_app.route('/getModelNames', methods=['GET'])
 def getModelNames():
     modelsList = os.listdir("models")
     returnResp = []
@@ -176,5 +176,5 @@ def getModelNames():
 #     # modelName = request.args.get("modelName")
 #     return "test"
 
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+# if __name__ == '__main__':
+#     app.run(host='127.0.0.1', port=8080, debug=True)
