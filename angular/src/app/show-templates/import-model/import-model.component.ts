@@ -54,7 +54,7 @@ export class ImportModelComponent implements OnInit {
     // var e= files;
     //pick from one of the 4 styles of file uploads below
     // this.file = e.target.files[0];
-    
+    this.spinnerService.show();
     let timeNow = new Date()
     console.log("--==--==--==--==--==--==--==--=="+timeNow.getHours()+ ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds())
     const formData: FormData = new FormData();
@@ -70,14 +70,10 @@ export class ImportModelComponent implements OnInit {
     this.changeFile=false
     this.apiservice.getUnzippedFiles(formData).subscribe(
       success => {
-        this.spinnerService.show();
+        this.spinnerService.hide();
         let timeNow2 = new Date()
         console.log("--==--==--==--==--==--==--==--=="+timeNow2.getHours()+ ":" + timeNow2.getMinutes() + ":" + timeNow2.getSeconds())
         console.log("result from backend :",success);
-        if(success){
-          this.spinnerService.hide();
-        }
-        
       },
       err =>{
         this.spinnerService.hide();
