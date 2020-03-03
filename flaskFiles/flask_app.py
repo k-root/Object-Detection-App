@@ -8,6 +8,7 @@ import train
 import evaluate
 import predict
 import predict_individual
+import time
 
 import os
 
@@ -139,6 +140,7 @@ def evaluateModel():
 @flask_app.route('/zipfile', methods=['POST'])
 def post():
     try:
+        print(time.time())
         zipFile = request.files['file']
         zipFileName = zipFile.filename
         print(zipFileName)
@@ -153,6 +155,7 @@ def post():
         # print(request.json.get("file_content"))
         print('-------------------------------')
         print('-------------------------------')
+        print(time.time())
         return json.dumps('{"success"}')
     except:
         return json.dumps('{"Fail"}')

@@ -53,20 +53,23 @@ export class ImportModelComponent implements OnInit {
     // var e= files;
     //pick from one of the 4 styles of file uploads below
     // this.file = e.target.files[0];
+    let timeNow = new Date()
+    console.log("--==--==--==--==--==--==--==--=="+timeNow.getHours()+ ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds())
     const formData: FormData = new FormData();
     formData.append('file', files[0], files[0].name);
     this.files = files;
     this.fileName = files[0].name
     this.extension = this.fileName.split(".")[1]
     if(this.extension!="zip"){
-      this.toastr.errorToastr("Please Upload a Zip File Only!", "Error")
+      this.toastr.errorToastr("Please Upload Zip File Only!", "Error")
       this.errorFileUpload=true;
     }
     else{
     this.changeFile=false
     this.apiservice.getUnzippedFiles(formData).subscribe(
       success => {
-        
+        let timeNow2 = new Date()
+    console.log("--==--==--==--==--==--==--==--=="+timeNow2.getHours()+ ":" + timeNow2.getMinutes() + ":" + timeNow2.getSeconds())
         console.log("result from backend :",success);
         
       }
@@ -118,6 +121,9 @@ onClickContinue(){
   if(!(this.fileName)){
     this.toastr.errorToastr('Upload Dataset', );
     // this.toastr.warningToastr('Upload Dataset', );
+  }
+  if(this.extension != "zip"){
+    this.toastr.errorToastr("Selected File is Not a Zip File", "Error!")
   }
   else if((count==this.classCount) && (this.fileName) && (this.extension == 'zip')){
     this.modelSelect=true;
