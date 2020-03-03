@@ -72,6 +72,17 @@ export class ApiService {
     return this.http.post(`${this.BASE_URL}/api/zipfile`, formData,this.requestOptions);
   }
 
+  sendImages(formData){
+    this.init();
+    console.log(formData)
+    return this.http.post(`${this.BASE_URL}/api/testImages`, formData,this.requestOptions);
+  }
+
+  getResultImages(){
+    this.init();
+    return this.http.get(`${this.BASE_URL}/api/getResultImages`, this.requestOptions)
+  }
+
   getModelNames():Observable<any>{
     this.init();
     return this.http.get(`${this.BASE_URL}/api/getModelNames`,this.requestOptions);

@@ -26,10 +26,11 @@ class PredictionConfig(Config):
 	IMAGES_PER_GPU = 1
 
 
-def predictImage(imageName, model, cfg, classes):
+def predictImage(imageName, model, cfg):
     # print("=========i in load mask is: "+ str(i))
     # image = dataset.load_image(i)
     # imageName = dataset.source_image_link(i)
+    print("Entered predict image")
     image = cv2.imread(imageName,cv2.IMREAD_COLOR)
     
     # mask, _ = dataset.load_mask(i)
@@ -73,12 +74,27 @@ def predictImage(imageName, model, cfg, classes):
         # draw the box
         # ax.add_patch(rect)
         # print((x1,y1),(x2,y2))
+        print("writing individual labels")
         detectedLabel = image[y1:y1+height, x1:x1+width]
-        cv2.imwrite(str(imageName).split(".")[0]+"/"+str(classes[predictedLabelID-1])+".jpg",detectedLabel)
+        cv2.imwrite(str(imageName).split(".")[0]+"/"+str(predictedLabelID-1)+".jpg",detectedLabel)
+        print("writing individual labels compleeteddddd+++++")
+        print("drawing bbox")
+
+        cv2.rectangle(image, (x1,y1), (x2,y2), (0, 0, 255), 5)
+        print("putting text on bbox")
+        cv2.putText(image, str(predictedLabelID), (x2+10,y2), cv2.FONT_HERSHEY_SIMPLEX , 2, (255, 0, 0), 5)
+        print("drawing bbox done")
+        
         loopNum+=1
+    print("writing images")
+    imageDir, imgNameWithoutPath = imageName.split("/")
+    print(imageDir, imgNameWithoutPath)
+    imageDestPath = imageDir+"/predict/"+imgNameWithoutPath
+    cv2.imwrite(imageDestPath ,image)
+    print("writing images completed")
+    return imageDestPath
 
-
-def predict(testFile, modelName, classes):
+def predict(testFile, modelName):
     print("entered predict for "+testFile)
     # load the train dataset
     # train_set = Dataset()
@@ -98,14 +114,16 @@ def predict(testFile, modelName, classes):
     # model_path = 'users/user1/dataset/models/mask_rcnn_ggb_cfg_0004.h5'
     model_path = "users/user1/dataset/models/ggb_cfg20200226/mask_rcnn_ggb_cfg_0004.h5"
     model.load_weights(model_path, by_name=True)
+    print("Loaded model Weights")
     # plot predictions for train dataset
     # plot_actual_vs_predicted(train_set, model, cfg)
     # plot predictions for test dataset
     # plot_actual_vs_predicted(test_set, model, cfg)
-    predictImage(testFile, model, cfg, classes)
+    imagePath = predictImage(testFile, model, cfg)
+    return imagePath
 
 if __name__ == "__main__":
-    imagesDir = "imageGGBTest/"
+    imagesDir = "individualTestImages/"
     dirFiles = os.listdir(imagesDir)  
     # imageFiles = []
     classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
@@ -116,6 +134,6 @@ if __name__ == "__main__":
             # imageFiles.append(files)
             print(files)
             testFile = imagesDir+files
-            predict(testFile, modelName, classes)
+            predict(testFile, modelName)
     # testFile = r"imageGGBTest\image3\pt$bb1212du-p1$a$en.jpg"
     

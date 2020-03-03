@@ -1,4 +1,4 @@
-<div style="width: 100%;height:100%;margin-left: 15px;" class="main-test" >
+<div style="width: 100%;height:100%;margin-left: 15px;" class="main-test">
 
   <div class="fileinput fileinput-new text-center" data-provides="fileinput" *ngIf="testModel">
 
@@ -7,7 +7,7 @@
       <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px;">
         <span class="fileinput-new">Upload Document</span>
         <span class="fileinput-exists">Change</span>
-        <input type="file"  id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" />
+        <input type="file" id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" multiple/>
       </span>
 
       <!-- <a href="javascript:void(0)" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"
@@ -19,7 +19,14 @@
     </div>
 
   </div>
-  <div class="card-body" style="overflow-y: scroll !important;height: 600px;">
-    <img id="blah" [src]="document"  [alt]='imageAlt' style="max-height: 100%;" />
-    </div>
+  <!-- <div *ngFor="let obj of files;let i = index">
+      <div class="card-body" style="overflow-y: scroll !important;height: 600px;">
+        <img id="blah" [src]="document"  [alt]='imageAlt' style="max-height: 100%;" />
+        <p><img id="output" width="200" /></p>
+        </div>
+  </div> -->
+  <div class="card-body" style="height: 600px;" *ngFor="let url of urls,let i=index">
+    <b>FileName : {{fileName[i]}}</b><br>
+    <img [src]="url" class="rounded mb-3" style="max-height: 100%;">
+  </div>
 </div>

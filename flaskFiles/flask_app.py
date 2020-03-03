@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import current_app, Flask, redirect, url_for, Blueprint, send_from_directory, render_template, request, Response
+from flask import current_app, Flask, redirect, url_for, Blueprint, send_from_directory, render_template, request, Response, send_file
 from flask_cors import CORS
 import requests
 import re
@@ -11,6 +11,8 @@ import predict_individual
 import time
 
 import os
+import shutil
+import base64
 
 flask_app = Blueprint('flask_app', __name__)
 
@@ -106,15 +108,15 @@ def testModel():
 def testIndividualModel():
     modelName = request.args.get("modelName")
     testFile = request.args.get("testFile")
-    datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
+    # datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
 
-    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
+    # classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
 
 
     # modelName = request.args.get("modelName")
     # predict.predict_main(datasetDir, modelName, testFile, classes)
     testFile = r"imageGGBTest\image3\pt$bb1212du-p1$a$en.jpg"
-    predict_individual.predict(testFile, modelName, classes)
+    predict_individual.predict(testFile, modelName)
     return "test individual"
 
 
@@ -156,11 +158,66 @@ def post():
         print('-------------------------------')
         print('-------------------------------')
         print(time.time())
-        return json.dumps('{"success"}')
+        return json_response({'message': 'success'}, 200)
     except:
-        return json.dumps('{"Fail"}')
+        return json_response({'message': 'fail'}, 201)
     # print(request.data.getvalue())
     
+@flask_app.route('/testImages', methods=['POST'])
+def postImages():
+    try:
+        print(time.time())
+        numFiles = len(request.files)
+        print("number of files uploaded",numFiles)
+        imageFiles = []
+        for i in range(numFiles):
+            imageFiles.append(request.files['file'+str(i)])
+        # imageFiles = zipFile.filename
+        print("Image Files List:-----------",imageFiles)
+        imagesDir = "individualTestImages/"
+        if os.path.isdir(imagesDir):
+            shutil.rmtree(imagesDir)
+        os.mkdir(imagesDir)
+        os.mkdir(imagesDir+"predict/")
+        print("checkpom 1")
+        for singleImage in imageFiles:
+            singleImageName = singleImage.filename
+            if singleImageName.split(".")[1]=="jpg" or singleImageName.split(".")[1]=='png':
+                # zipFile.save(r"./dataset/"+ zipFileName)
+                singleImage.save(imagesDir+singleImageName)
+                print("checkpom 2")
+            else:
+                return json.dumps("Not a image")
+            # print(request.json.get("files")) 
+            # print('-------------------------------')
+            # print(request.json.get("file_content"))
+            print('-------------------------------')
+            print('-------------------------------')
+            print(time.time())
+        print("checkpom 3")
+        dirFiles = os.listdir(imagesDir)  
+        # imageFiles = []
+        # classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
+        modelName = "ggb"
+        imageList = []
+        print("checkpom 4")
+        for files in dirFiles:
+            if not os.path.isdir(imagesDir+files):
+                # imageFiles.append(files)
+                print(files)
+                testFile = imagesDir+files
+                imagePath=predict_individual.predict(testFile, modelName)
+                with open(imagePath, "rb") as img:
+                    data = img.read()
+                    encodedData = base64.encodestring(data)
+                    imageList.append(encodedData.decode('ascii'))
+                print("checkpom 5")
+        print("checkpom 6", imageList)     
+        return {"imageList":imageList}
+        # return send_from_directory()
+        # return json_response({'message': 'success', 'imagePayload':imageList}, 200)
+    except:
+        return json_response({'message': 'fail'}, 200)
 @flask_app.route('/getModelNames', methods=['GET'])
 def getModelNames():
     modelsList = os.listdir("models")
@@ -183,3 +240,7 @@ def getModelNames():
 
 # if __name__ == '__main__':
 #     app.run(host='127.0.0.1', port=8080, debug=True)
+
+
+def json_response(payload, status=200):
+ return (json.dumps(payload), status, {'content-type': 'application/json'})

@@ -62,6 +62,7 @@ export class ImportModelComponent implements OnInit {
     this.files = files;
     this.fileName = files[0].name
     this.extension = this.fileName.split(".")[1]
+    console.log(formData)
     if(this.extension!="zip"){
       this.toastr.errorToastr("Please Upload Zip File Only!", "Error")
       this.errorFileUpload=true;
