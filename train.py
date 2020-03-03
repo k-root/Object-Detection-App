@@ -156,4 +156,6 @@ def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate):
 		learningRate=config.LEARNING_RATE
 	if(numEpochs==0 or not numEpochs):
 		numEpochs=5
-	model.train(train_set, test_set, learning_rate=learningRate, epochs=numEpochs, layers='heads')
+	history = model.train(train_set, test_set, learning_rate=learningRate, epochs=numEpochs, layers='heads')
+	print("***************this is HISTORY***************", history, "***************end***************" )
+	return history

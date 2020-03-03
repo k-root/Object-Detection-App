@@ -84,8 +84,8 @@ def runTrain():
         numEpochs = 10
     if learningRate==0 or not learningRate:
         learningRate = 0.001
-    train.run_train(dataset_dir, weights, classes, numEpochs, learningRate)
-    return json.dumps("train")
+    history = train.run_train(dataset_dir, weights, classes, numEpochs, learningRate)
+    return json.dumps(history)
 
 
 @flask_app.route("/test",methods=['GET', 'POST'])
