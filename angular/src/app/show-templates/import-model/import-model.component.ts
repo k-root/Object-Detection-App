@@ -2,6 +2,7 @@ import { Component, OnInit,Injectable, Input } from '@angular/core';
 import { ApiService } from '../../api-service/api.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 import { Router } from '@angular/router';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 @Component({
   selector: 'app-import-model',
   templateUrl: './import-model.component.html',
@@ -25,7 +26,7 @@ export class ImportModelComponent implements OnInit {
   importClassesCheck={};
   fileNameCheck;
   extension;
-  constructor(private apiservice: ApiService,private toastr:ToastrManager,private router: Router,) { 
+  constructor(private apiservice: ApiService,private toastr:ToastrManager,private router: Router,private spinnerService: Ng4LoadingSpinnerService) { 
     // this.router.routeReuseStrategy.shouldReuseRoute = function(){
     //   return false;
     // }
@@ -53,6 +54,7 @@ export class ImportModelComponent implements OnInit {
     // var e= files;
     //pick from one of the 4 styles of file uploads below
     // this.file = e.target.files[0];
+    
     let timeNow = new Date()
     console.log("--==--==--==--==--==--==--==--=="+timeNow.getHours()+ ":" + timeNow.getMinutes() + ":" + timeNow.getSeconds())
     const formData: FormData = new FormData();
@@ -68,12 +70,19 @@ export class ImportModelComponent implements OnInit {
     this.changeFile=false
     this.apiservice.getUnzippedFiles(formData).subscribe(
       success => {
+        this.spinnerService.show();
         let timeNow2 = new Date()
-    console.log("--==--==--==--==--==--==--==--=="+timeNow2.getHours()+ ":" + timeNow2.getMinutes() + ":" + timeNow2.getSeconds())
+        console.log("--==--==--==--==--==--==--==--=="+timeNow2.getHours()+ ":" + timeNow2.getMinutes() + ":" + timeNow2.getSeconds())
         console.log("result from backend :",success);
+        if(success){
+          this.spinnerService.hide();
+        }
         
+      },
+      err =>{
+        this.spinnerService.hide();
+        console.log(err);
       }
-      
       
     );
     }
