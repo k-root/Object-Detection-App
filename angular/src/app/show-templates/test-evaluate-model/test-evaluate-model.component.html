@@ -1,13 +1,17 @@
 <div style="width: 100%;height:100%;margin-left: 15px;" class="main-test">
 
-  <div class="fileinput fileinput-new text-center" data-provides="fileinput" *ngIf="testModel">
+  <div class="fileinput fileinput-new text-center" style="width: 100%;" data-provides="fileinput" *ngIf="testModel">
 
     <!-- <div class="fileinput-preview fileinput-exists thumbnail"></div> -->
-    <div>
-      <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px;">
-        <span class="fileinput-new">Upload Document</span>
+    <div style="width: 100%;">
+      <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px;float: left; ">
+        <span class="fileinput-new" >Upload Document</span>
         <span class="fileinput-exists">Change</span>
         <input type="file" id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" multiple/>
+      </span>
+      <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px; float: right;margin-right: 50%;" *ngIf="testButton" (click)="submitTest()">
+        <span >Test</span>
+        <!-- <input type="file" id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" multiple/> -->
       </span>
 
       <!-- <a href="javascript:void(0)" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"

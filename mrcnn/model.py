@@ -2504,6 +2504,7 @@ class MaskRCNN():
 
         # Mold inputs to format expected by the neural network
         molded_images, image_metas, windows = self.mold_inputs(images)
+        print("checkpoint 13")
 
         # Validate image sizes
         # All images in a batch MUST be of the same size
@@ -2513,6 +2514,8 @@ class MaskRCNN():
                 "After resizing, all images must have the same size. Check IMAGE_RESIZE_MODE and image sizes."
 
         # Anchors
+        print("checkpoint 14")
+
         anchors = self.get_anchors(image_shape)
         # Duplicate across the batch dimension because Keras requires it
         # TODO: can this be optimized to avoid duplicating the anchors?
@@ -2527,6 +2530,8 @@ class MaskRCNN():
             self.keras_model.predict([molded_images, image_metas, anchors], verbose=0)
         # Process detections
         results = []
+        print("checkpoint 15")
+
         for i, image in enumerate(images):
             final_rois, final_class_ids, final_scores, final_masks =\
                 self.unmold_detections(detections[i], mrcnn_mask[i],

@@ -14,6 +14,8 @@ import csv
 import cv2
 import os
 import os.path
+from keras import backend as K
+
 
 # define the prediction configuration
 class PredictionConfig(Config):
@@ -38,8 +40,10 @@ def predictImage(imageName, model, cfg):
     print(imageName, image.shape)
     # convert pixel values (e.g. center)
     scaled_image = mold_image(image, cfg)
+    print("checkpoint 10")
     # convert image into one sample
     sample = expand_dims(scaled_image, 0)
+    print("checkpoint 11")
     # make prediction
     yhat = model.detect(sample, verbose=0)[0]
     # define subplot
@@ -92,6 +96,7 @@ def predictImage(imageName, model, cfg):
     imageDestPath = imageDir+"/predict/"+imgNameWithoutPath
     cv2.imwrite(imageDestPath ,image)
     print("writing images completed")
+    clearSession()
     return imageDestPath
 
 def predict(testFile, modelName):
@@ -112,6 +117,7 @@ def predict(testFile, modelName):
     model = MaskRCNN(mode='inference', model_dir='./users/user1/dataset/models/', config=cfg)
     # load model weights
     # model_path = 'users/user1/dataset/models/mask_rcnn_ggb_cfg_0004.h5'
+    print("loaded config, loading model")
     model_path = "users/user1/dataset/models/ggb_cfg20200226/mask_rcnn_ggb_cfg_0004.h5"
     model.load_weights(model_path, by_name=True)
     print("Loaded model Weights")
@@ -120,8 +126,11 @@ def predict(testFile, modelName):
     # plot predictions for test dataset
     # plot_actual_vs_predicted(test_set, model, cfg)
     imagePath = predictImage(testFile, model, cfg)
+    clearSession()
     return imagePath
 
+def clearSession():
+    K.clear_session()
 if __name__ == "__main__":
     imagesDir = "individualTestImages/"
     dirFiles = os.listdir(imagesDir)  

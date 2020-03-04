@@ -1,6 +1,8 @@
-import { Component, OnInit ,Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ApiService } from '../../api-service/api.service';
 import { SelectTrainModelComponent } from '../select-train-model/select-train-model.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 @Component({
   selector: 'app-test-evaluate-model',
   templateUrl: './test-evaluate-model.component.html',
@@ -8,7 +10,7 @@ import { SelectTrainModelComponent } from '../select-train-model/select-train-mo
   providers: [SelectTrainModelComponent]
 })
 export class TestEvaluateModelComponent implements OnInit {
-  @Input() header:string;
+  @Input() header: string;
   templates: String[];
   selectedTemplate: string;
   showResult = false;
@@ -22,64 +24,50 @@ export class TestEvaluateModelComponent implements OnInit {
   imageAlt = '';
   imageLoading = false;
   tables = {};
-  showTable=false;
+  showTable = false;
   column_length = 0;
-  selectedImage:string;
+  selectedImage: string;
   debugOutput: any;
   testModel;
   evaluateModel;
   urls;
-  constructor(private apiservice: ApiService,private selectTrain: SelectTrainModelComponent) { }
+  formData: FormData = new FormData();
+  testButton: boolean = false;
+  constructor(private apiservice: ApiService,
+    private selectTrain: SelectTrainModelComponent,
+    private sanitizer: DomSanitizer,
+    private spinner: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     console.log(this.header)
     console.log(this.selectTrain.globalStr)
-    this.selectTrain.globalStr="changed text"
-    if(this.header=="chooseTest"){
-      this.testModel=true;
+    this.selectTrain.globalStr = "changed text"
+    if (this.header == "chooseTest") {
+      this.testModel = true;
     }
-    else if(this.header=="chooseEvaluate"){
-      this.evaluateModel=true;     
+    else if (this.header == "chooseEvaluate") {
+      this.evaluateModel = true;
+    }
   }
-  }
-  readURL(files:File){
+  readURL(files: File) {
     // if($('#sampleImageDropdown').val() != 'Select Sample Image'){
     //   $('#sampleImageDropdown').val('Select Sample Image')
     // }
-      console.log(files,"files uploaded",Object.keys(files).length)
-      const formData: FormData = new FormData();
-      this.fileName={};
-      for(let fileLength=0 ; fileLength<Object.keys(files).length;fileLength++){
-          formData.append('file'+fileLength.toString(), files[fileLength], files[fileLength].name);
-          // this.files = files;
-          
-          this.fileName[fileLength] = files[fileLength].name
-        }
-      
-      // this.extension = this.fileName.split(".")[1]
-      
-      console.log(formData,"______________________________");
-      // this.changeFile=false
-      ////
+    console.log(files, "files uploaded", Object.keys(files).length)
+    // const formData: FormData = new FormData();
+    this.fileName = {};
+    for (let fileLength = 0; fileLength < Object.keys(files).length; fileLength++) {
+      this.formData.append('file' + fileLength.toString(), files[fileLength], files[fileLength].name);
+      // this.files = files;
 
+      this.fileName[fileLength] = files[fileLength].name
+    }
 
-      this.apiservice.sendImages(formData).subscribe(
-        resp => {
-          
-          console.log("result from backend :",resp);
-          let imageFile = new FileReader()
-          imageFile.readAsBinaryString(resp["imageList"])
-          
-          
-        },
-        err =>{
-          console.log(err);
-        }
-        
-      );
-      
+    // this.extension = this.fileName.split(".")[1]
 
-
+    console.log(this.formData, "______________________________");
+    // this.changeFile=false
+    ////
     // if (files) {
     //   for(let fileindex=0 ; fileindex<Object.keys(files).length;fileindex++){
     //       if(files[fileindex]){
@@ -93,30 +81,49 @@ export class TestEvaluateModelComponent implements OnInit {
     //         this.showResult = false;
     //         console.log(this.document)
     //         var image = document.getElementById('output') ;
-            
+
     //         (image as HTMLImageElement).src = URL.createObjectURL(files[fileindex]);
     //       }
     //     }
     //   }
-            this.urls = [];
-           
-            if (files) {
-              console.log(files)
-              for (let fileindex=0 ; fileindex<Object.keys(files).length;fileindex++) {
-                let reader = new FileReader();
-                reader.onload = (e: any) => {
-                  this.urls.push(e.target.result);
-                  console.log(this.urls)
-                }
-                reader.readAsDataURL(files[fileindex]);
-              }
-            }
-  
-  
-  
-          
-      
-    
+    this.urls = [];
+
+    if (files) {
+      console.log(files)
+      for (let fileindex = 0; fileindex < Object.keys(files).length; fileindex++) {
+        let reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.urls.push(e.target.result);
+          console.log("urls are:", this.urls)
+          console.log("urls items are: ", this.urls[0])
+        }
+        reader.readAsDataURL(files[fileindex]);
+      }
+      this.testButton=true;
+    }
+  }
+
+  submitTest() {
+    console.log("submitting test")
+    this.spinner.show()
+    this.apiservice.sendImages(this.formData).subscribe(
+      resp => {
+        this.spinner.hide()
+        console.log("result from backend :", resp);
+        // let imageFile = new FileReader()
+        // imageFile.readAsBinaryString(resp["imageList"])
+        let imageDataBytesFromBackend = resp["imageList"]
+        for (let index = 0; index < imageDataBytesFromBackend.length; index++) {
+          var url = 'data:image/jpeg;base64,' + imageDataBytesFromBackend[index];
+          this.urls[index] = this.sanitizer.bypassSecurityTrustResourceUrl(url)
+        }
+
+      },
+      err => {
+        console.log(err);
+      }
+
+    );
   }
 
 }

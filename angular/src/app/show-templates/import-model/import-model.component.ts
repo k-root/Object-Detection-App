@@ -66,6 +66,7 @@ export class ImportModelComponent implements OnInit {
     if(this.extension!="zip"){
       this.toastr.errorToastr("Please Upload Zip File Only!", "Error")
       this.errorFileUpload=true;
+      this.spinnerService.hide();
     }
     else{
     this.changeFile=false
