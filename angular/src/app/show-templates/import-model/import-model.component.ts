@@ -71,11 +71,12 @@ export class ImportModelComponent implements OnInit {
     else{
     this.changeFile=false
     this.apiservice.getUnzippedFiles(formData).subscribe(
-      success => {
+      resp => {
         this.spinnerService.hide();
         let timeNow2 = new Date()
         console.log("--==--==--==--==--==--==--==--=="+timeNow2.getHours()+ ":" + timeNow2.getMinutes() + ":" + timeNow2.getSeconds())
-        console.log("result from backend :",success);
+        console.log("result from backend :",resp);
+        console.log(resp["classesList"])
       },
       err =>{
         this.spinnerService.hide();

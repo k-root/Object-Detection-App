@@ -22,7 +22,7 @@ def parseXML(xmlfile):
     return classes
   
       
-def main(datasetDir): 
+def getClasses(datasetDir): 
     # datasetDir = "datasets/ggbDatasetStraightFlangedFRC/"
     classesList = []
     xmlFileList = os.listdir(datasetDir+"annots")

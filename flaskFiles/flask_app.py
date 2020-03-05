@@ -14,7 +14,7 @@ import os
 import shutil
 import base64
 
-import getNumClassesOfData
+from .getNumClassesOfData  import getClasses
 
 flask_app = Blueprint('flask_app', __name__)
 
@@ -45,7 +45,7 @@ def unzipDataset(zipFileName):
     directory_to_extract_to = "datasets/"
     with zipfile.ZipFile(path_to_zip_file, 'r') as zip_ref:
         zip_ref.extractall(directory_to_extract_to)
-    return directory_to_extract_to+zipFileName.split(".")[0]
+    return directory_to_extract_to+zipFileName.split(".")[0]+"/"
 
 @flask_app.route("/train",methods=['GET', 'POST'])
 def runTrain():
@@ -161,9 +161,11 @@ def post():
         print('-------------------------------')
         print('-------------------------------')
         print(time.time())
-        unzipDataset(zipFileName)
-        classesList = getNumClassesOfData.main(zipFileSaveDir)
-        return json_response({'message': 'success', 'classesList': classesList}, 200)
+        datasetDir = unzipDataset(zipFileName)
+        print("unzip datafile")
+        classesList = getClasses(datasetDir)
+        print("got num classes")
+        return json_response({'message': 'success', 'classesList':list(classesList)} , 200)
 
     except:
         return json_response({'message': 'fail'}, 201)
