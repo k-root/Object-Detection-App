@@ -14,6 +14,8 @@ import os
 import shutil
 import base64
 
+import getNumClassesOfData
+
 flask_app = Blueprint('flask_app', __name__)
 
 
@@ -55,7 +57,7 @@ def runTrain():
             # 'selectModelName': 'mask_rcnn_kangaroo_cfg_0005.h5', 'epochs': 1,
             # 'learningRate': 0.1}
     numClasses = data['importClassCount']
-    dataset_dir = unzipDataset(data['importFolder'])
+    dataset_dir = "datasets/"+data['importFolder'].split(".")[0]
     datasetName = data['importFolder'].split(".")[0]
     numEpochs = data['epochs']
     learningRate = data['learningRate']
@@ -146,10 +148,11 @@ def post():
         zipFile = request.files['file']
         zipFileName = zipFile.filename
         print(zipFileName)
+        zipFileSaveDir = r"./dataset/"+ zipFileName
         if zipFileName.split(".")[1]=="zip":
             if not os.path.isdir("dataset"):
                 os.mkdir("dataset")
-            zipFile.save(r"./dataset/"+ zipFileName)
+            zipFile.save(zipFileSaveDir)
         else:
             return json.dumps("Not a Zip")
         # print(request.json.get("files")) 
@@ -158,7 +161,10 @@ def post():
         print('-------------------------------')
         print('-------------------------------')
         print(time.time())
-        return json_response({'message': 'success'}, 200)
+        unzipDataset(zipFileName)
+        classesList = getNumClassesOfData.main(zipFileSaveDir)
+        return json_response({'message': 'success', 'classesList': classesList}, 200)
+
     except:
         return json_response({'message': 'fail'}, 201)
     # print(request.data.getvalue())

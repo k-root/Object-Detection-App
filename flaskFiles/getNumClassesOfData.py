@@ -22,8 +22,8 @@ def parseXML(xmlfile):
     return classes
   
       
-def main(): 
-    datasetDir = "datasets/ggbDatasetStraightFlangedFRC/"
+def main(datasetDir): 
+    # datasetDir = "datasets/ggbDatasetStraightFlangedFRC/"
     classesList = []
     xmlFileList = os.listdir(datasetDir+"annots")
     for xmlFile in xmlFileList:
@@ -32,8 +32,10 @@ def main():
     uniqueClasses = set(classesList)
     numClasses = len(uniqueClasses)
     print(uniqueClasses,numClasses)
+    return uniqueClasses
       
 if __name__ == "__main__": 
   
     # calling main function 
-    main() 
+    classes = main() 
+    # return classes
