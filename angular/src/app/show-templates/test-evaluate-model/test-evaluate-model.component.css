@@ -7,6 +7,23 @@
     border-color: #dbdcdd !important;
     border: solid;
 }
+.spanstyle{
+  border-radius: 5px;
+  float: left;
+  color: #828485;
+  background-color: #e8e5e5;
+  border-color: #dbdcdd !important;
+  border: solid;
+  border-radius: 5px;
+}
+.spanstyle:hover{
+    color: whitesmoke;
+    background-color: cornflowerblue !important;
+    border-color: rgb(90, 141, 236) !important;
+    border: solid;
+    border-radius: 5px;
+    float: left;
+}
 .buttonB:hover{
     color: whitesmoke;
     background-color: cornflowerblue;
