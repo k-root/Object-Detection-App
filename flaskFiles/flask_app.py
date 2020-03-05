@@ -191,9 +191,7 @@ def postImages():
         for singleImage in imageFiles:
             singleImageName = singleImage.filename
             if singleImageName.split(".")[1]=="jpg" or singleImageName.split(".")[1]=='png':
-                # zipFile.save(r"./dataset/"+ zipFileName)
                 singleImage.save(imagesDir+singleImageName)
-                print("checkpom 2")
             else:
                 return json.dumps("Not a image")
             # print(request.json.get("files")) 

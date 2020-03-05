@@ -56,8 +56,8 @@ height: 100%;">
             
               <label style="float:unset;margin-right: 100px;color: grey;" >Class Names</label>
                 
-                  <div  *ngFor="let class of objectKeys(importClasses); let i = index" style="width: 20%;">
-                    Class {{i+1}} {{importClasses[class]}}
+                  <div  *ngFor="let class of objectKeys(importClasses); let i = index" style="width: fit-content;  padding: 5px; margin-bottom: 5px;">
+                    <b>Class {{i+1}}:</b>  {{importClasses[class]}}
                   </div>
                 
             
