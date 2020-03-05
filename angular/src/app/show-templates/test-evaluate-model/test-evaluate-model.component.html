@@ -17,12 +17,12 @@
 
     <!-- <div class="fileinput-preview fileinput-exists thumbnail"></div> -->
     <div style="width: 100%;margin-bottom: 5%;">
-      <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px;float: left; ">
+      <span class="btn btn-rose btn-round btn-file spanstyle" >
         <span class="fileinput-new" >Upload Document</span>
         <span class="fileinput-exists">Change</span>
         <input type="file" id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" multiple/>
       </span>
-      <span class="btn btn-rose btn-round btn-file" style="border-radius: 5px; float: right;margin-right: 50%;" *ngIf="testButton" (click)="submitTest()">
+      <span class="btn btn-rose btn-round btn-file spanstyle" style="border-radius: 5px; float: right;margin-right: 50%;" *ngIf="testButton" (click)="submitTest()">
         <span >Test</span>
         <!-- <input type="file" id="img" name="img" accept="image/*" (change)="readURL($event.target.files);" multiple/> -->
       </span>
