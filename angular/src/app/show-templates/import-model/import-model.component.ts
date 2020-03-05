@@ -129,10 +129,10 @@ onClickContinue(){
     this.toastr.errorToastr('Upload Dataset', );
     // this.toastr.warningToastr('Upload Dataset', );
   }
-  if(this.extension != "zip"){
+  if(this.fileName.split(".")[1] != "zip"){
     this.toastr.errorToastr("Selected File is Not a Zip File", "Error!")
   }
-  else if((count==this.classCount) && (this.fileName) && (this.extension == 'zip')){
+  else if((count==this.classCount) && (this.fileName) && (this.fileName.split(".")[1] == 'zip')){
     this.modelSelect=true;
     console.log(this.class)
     

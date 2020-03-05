@@ -7,17 +7,11 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {ToastrModule} from 'ng6-toastr-notifications'
 import { AppComponent }   from './app.component';
-import {MatSelectModule} from '@angular/material/select';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule,MatInputModule,MatRadioModule,MatSelectModule,MatOptionModule} from '@angular/material'
 import { SidebarModule } from './sidebar/sidebar.module';
 import { FixedPluginModule } from './shared/fixedplugin/fixedplugin.module';
 import { FooterModule } from './shared/footer/footer.module';
-import {
-    
-    MatFormFieldModule
-} from '@angular/material';
+
 import { NavbarModule} from './shared/navbar/navbar.module';
 import { AdminLayoutComponent } from './layouts/admin/admin-layout.component';
 import { AuthLayoutComponent } from './layouts/auth/auth-layout.component';
@@ -57,8 +51,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatProgressSpinnerModule,
         MatSelectModule,
         MatInputModule,
-        MatButtonModule,
-        MatButtonToggleModule,
+        MatRadioModule,
+        MatOptionModule,
         MatFormFieldModule,
         // SelectTrainModelModule
     ],
