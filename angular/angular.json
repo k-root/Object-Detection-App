@@ -24,7 +24,8 @@
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/sweetalert2/src/sweetalert2.scss",
               "src/assets/scss/paper-dashboard.scss",
-              "src/assets/css/demo.css"
+              "src/assets/css/demo.css",
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -137,7 +138,8 @@
               "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "node_modules/sweetalert2/src/sweetalert2.scss",
               "src/assets/scss/paper-dashboard.scss",
-              "src/assets/css/demo.css"
+              "src/assets/css/demo.css",
+              "src/styles.scss"
             ],
             "assets": [
               "src/assets",

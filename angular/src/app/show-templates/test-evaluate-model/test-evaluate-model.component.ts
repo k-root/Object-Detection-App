@@ -3,6 +3,11 @@ import { ApiService } from '../../api-service/api.service';
 import { SelectTrainModelComponent } from '../select-train-model/select-train-model.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+export interface Food {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-test-evaluate-model',
   templateUrl: './test-evaluate-model.component.html',
@@ -31,8 +36,21 @@ export class TestEvaluateModelComponent implements OnInit {
   testModel;
   evaluateModel;
   urls;
+  user;
   formData: FormData = new FormData();
   testButton: boolean = false;
+  modelSelected:string;
+  models = [  
+    "Model1","Model2","Model3"
+  ];
+  selectedFood: string;
+  selectedFoodModel: string;
+  foods: Food[] = [
+    {value: 'steak-0', viewValue: 'Steak'},
+    {value: 'pizza-1', viewValue: 'Pizza'},
+    {value: 'tacos-2', viewValue: 'Tacos'}
+  ];
+
   constructor(private apiservice: ApiService,
     private selectTrain: SelectTrainModelComponent,
     private sanitizer: DomSanitizer,
@@ -48,6 +66,29 @@ export class TestEvaluateModelComponent implements OnInit {
     else if (this.header == "chooseEvaluate") {
       this.evaluateModel = true;
     }
+    console.log(localStorage.getItem('username'));
+    this.user = localStorage.getItem('username');
+    // this.spinner.show()
+    // this.apiservice.getUserModels(this.user).subscribe(
+    //   resp => {
+    //     this.spinner.hide()
+    //     console.log("result from backend :", resp);
+    //     // let imageFile = new FileReader()
+    //     // imageFile.readAsBinaryString(resp["imageList"])
+    //     let imageDataBytesFromBackend = resp["imageList"]
+    //     for (let index = 0; index < imageDataBytesFromBackend.length; index++) {
+    //       var url = 'data:image/jpeg;base64,' + imageDataBytesFromBackend[index];
+    //       this.urls[index] = this.sanitizer.bypassSecurityTrustResourceUrl(url)
+    //     }
+
+    //   },
+    //   err => {
+    //     console.log(err);
+    //     this.spinner.hide();
+    //   }
+
+    // );
+    
   }
   readURL(files: File) {
     // if($('#sampleImageDropdown').val() != 'Select Sample Image'){
@@ -124,6 +165,10 @@ export class TestEvaluateModelComponent implements OnInit {
       }
 
     );
+  }
+
+  selectedModel(event:string){
+    console.log(this.modelSelected)
   }
 
 }

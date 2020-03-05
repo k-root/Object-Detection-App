@@ -1,6 +1,29 @@
 <div style="width: 100%;height:100%;margin-left: 15px;" class="main-test">
+  
+  <h4>Basic mat-select</h4>
+<mat-form-field>
+  <mat-select placeholder="Favorite food" name="foods" [(value)]="selectedFood">
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+      {{food.viewValue}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+<p>Selected food = {{selectedFood}}</p>
 
-  <div class="fileinput fileinput-new text-center" style="width: 100%;" data-provides="fileinput" *ngIf="testModel">
+  <div>
+        <h4>Select A Model</h4>
+        <mat-form-field>
+          <mat-label>Model</mat-label>
+              <mat-select (change)="selectedModel($event)" [(ngModel)]=modelSelected>
+                <mat-option *ngFor="let model of models" [value]="model">
+                  {{model}}
+                </mat-option>
+              </mat-select>
+        </mat-form-field>
+        <br>
+    Selected Model : {{modelSelected}}
+  </div>
+  <div class="fileinput fileinput-new text-center" style="width: 100%;" data-provides="fileinput" *ngIf="testModel && modelSelected">
 
     <!-- <div class="fileinput-preview fileinput-exists thumbnail"></div> -->
     <div style="width: 100%;">
@@ -21,7 +44,10 @@
       <!-- <span class="btn btn-rose btn-round btn-file" (click)="getSampleImage()">Get Sample Image</span> -->
       <!-- </div> -->
     </div>
-
+    <div class="card-body" style="height: 600px;" *ngFor="let url of urls,let i=index">
+      <b>FileName : {{fileName[i]}}</b><br>
+      <img [src]="url" class="rounded mb-3" style="max-height: 100%;">
+    </div>
   </div>
   <!-- <div *ngFor="let obj of files;let i = index">
       <div class="card-body" style="overflow-y: scroll !important;height: 600px;">
@@ -29,8 +55,5 @@
         <p><img id="output" width="200" /></p>
         </div>
   </div> -->
-  <div class="card-body" style="height: 600px;" *ngFor="let url of urls,let i=index">
-    <b>FileName : {{fileName[i]}}</b><br>
-    <img [src]="url" class="rounded mb-3" style="max-height: 100%;">
-  </div>
+  
 </div>
