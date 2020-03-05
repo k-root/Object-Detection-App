@@ -77,6 +77,11 @@ export class ImportModelComponent implements OnInit {
         console.log("--==--==--==--==--==--==--==--=="+timeNow2.getHours()+ ":" + timeNow2.getMinutes() + ":" + timeNow2.getSeconds())
         console.log("result from backend :",resp);
         console.log(resp["classesList"])
+        this.classCount = resp["classesList"].length
+        this.class = resp["classesList"]
+
+
+        
       },
       err =>{
         this.spinnerService.hide();
