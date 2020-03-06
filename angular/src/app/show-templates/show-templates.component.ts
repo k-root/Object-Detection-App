@@ -77,7 +77,7 @@ export class ShowTemplatesComponent implements OnInit {
           this.trainModelInput["importClassCount"] = this.importclassCount
           this.trainModelInput["importClasses"] = this.importClasses
           this.trainModelInput["importFolder"] = this.importFolder
-          this.trainModelInput["stepsPerEpoch"] =
+          this.trainModelInput["stepsPerEpoch"] = this.stepsPerEpoch
 
           
           this.traverse=true;       
@@ -97,9 +97,11 @@ export class ShowTemplatesComponent implements OnInit {
           this.epoch=JSON.parse(params.get('epochs'));
           this.learningRate=JSON.parse(params.get('learningRate'));
           this.modelTraining=JSON.parse(params.get('modelTraining'))
+          this.stepsPerEpoch = JSON.parse(params.get('stepsPerEpoch'));
           this.trainModelInput["epochs"] = this.epoch;
           this.trainModelInput["learningRate"] = this.learningRate;
           this.trainModelInput["modelTraining"] = this.modelTraining;
+          this.trainModelInput["stepsPerEpoch"] = this.stepsPerEpoch
           console.log("results from train component",this.trainModelInput)
           this.apiservice.getTrainResults(this.trainModelInput).subscribe(
             resp=>{

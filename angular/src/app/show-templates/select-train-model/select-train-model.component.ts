@@ -16,7 +16,7 @@ export class SelectTrainModelComponent implements OnInit {
   currentModel;
   epoch;
   learningRate;
-  stepsPerEpoch = 128;
+  stepsPerEpoch:number = 128;
   objectKeys=Object.keys
   importClasses; importclassCount;
   selectModelName;

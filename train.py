@@ -146,7 +146,7 @@ def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate, stepsPe
 	print("Config num classes-=-=-=-=-=-=-=-=-=-=-=",len(classes), 1+len(classes))
 	config.NUM_CLASSES = int(1 + len(classes))
 	# config.setNumClasses(len(classes))
-	print("-=-=-=-=-=-=-=-=config Num classes = ", config.NUM_CLASSES)
+	print("-=-=-=-=-=-=-=-=config Num classes = ", config.NUM_CLASSES, stepsPerEpoch)
 	config.STEPS_PER_EPOCH = stepsPerEpoch
 	config.LEARNING_RATE = learningRate
 	config.display()
