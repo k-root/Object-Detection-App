@@ -63,9 +63,12 @@ def runTrain():
     learningRate = data['learningRate']
     modelSelected = data['selectModelName']
     weights = "models/"+modelSelected
+    classesDict = data['importClasses']
+    stepsPerEpoch = data['stepsPerEpoch']
+    classes = list(classesDict.values())
     # classes = request.args.get("classes")
     # dataset_dir = request.args.get("datasetDir")
-    classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
+    # classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
     dirList = os.listdir("./")
 
     print(dirList)
@@ -86,12 +89,18 @@ def runTrain():
     # dataset_dir = "datasets/ggbDatasetStraightFlangedFRC"####Change to dynamic
     if numEpochs==0 or not numEpochs:
         numEpochs = 10
+    
+    print("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=LEarnig rate =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==--=-=-=", learningRate)
     if learningRate==0 or not learningRate:
+        print("enter if of learnign rate")
         learningRate = 0.001
-    history = train.run_train(dataset_dir, weights, classes, numEpochs, learningRate)
-    return json.dumps(history)
+    if stepsPerEpoch==0 or not stepsPerEpoch:
+        stepsPerEpoch = 128 
+    history = train.run_train(dataset_dir, weights, classes, numEpochs, learningRate, stepsPerEpoch)
+    return json.dumps("history")
 
 
+##test an entire dir
 @flask_app.route("/test",methods=['GET', 'POST'])
 def testModel():
     modelName = request.args.get("modelName")
@@ -100,26 +109,25 @@ def testModel():
 
     classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
 
-
     # modelName = request.args.get("modelName")
     predict.predict_main(datasetDir, modelName, testFile, classes)
     return "test"
 
 
-@flask_app.route("/testIndividual",methods=['GET', 'POST'])
-def testIndividualModel():
-    modelName = request.args.get("modelName")
-    testFile = request.args.get("testFile")
-    # datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
+# @flask_app.route("/testIndividual",methods=['GET', 'POST'])
+# def testIndividualModel():
+#     modelName = request.args.get("modelName")
+#     testFile = request.args.get("testFile")
+#     # datasetDir = "datasets/ggbDatasetStraightFlangedFRC"
 
-    # classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
+#     # classes = ['Flanged Thickness', 'Pin Indent Pattern', 'Grease Hole Angular Location', 'Length', 'ID', 'Grease Hole Length Location', 'ID Corner Break', 'OD Chamfer Length', 'Grease Hole Diameter', 'OD Chamfer Angle', 'Flanged Diameter', 'OD', 'Flanged Bend Radius']
 
 
-    # modelName = request.args.get("modelName")
-    # predict.predict_main(datasetDir, modelName, testFile, classes)
-    testFile = r"imageGGBTest\image3\pt$bb1212du-p1$a$en.jpg"
-    predict_individual.predict(testFile, modelName)
-    return "test individual"
+#     # modelName = request.args.get("modelName")
+#     # predict.predict_main(datasetDir, modelName, testFile, classes)
+#     testFile = r"imageGGBTest\image3\pt$bb1212du-p1$a$en.jpg"
+#     predict_individual.predict(testFile, modelName)
+#     return "test individual"
 
 
 @flask_app.route("/evaluate",methods=['GET', 'POST'])

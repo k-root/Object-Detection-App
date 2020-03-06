@@ -117,17 +117,17 @@ class Dataset(Dataset):
 		return info['path']
 
 # define a configuration for the model
-class KangarooConfig(Config):
+class DataConfig(Config):
 	# define the name of the configuration
 	NAME = "ggb_cfg"####Change to dynamic
 	# number of classes (background + kangaroo)
-	NUM_CLASSES = 1 + 13####Change to dynamic
+	NUM_CLASSES = 1 + 0####Change to dynamic
 	# number of training steps per epoch
 	STEPS_PER_EPOCH = 96####Change to dynamic
 
 # prepare train set
 
-def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate):
+def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate, stepsPerEpoch):
 	train_set = Dataset()
 	train_set.load_dataset(datasetDir, classes,  is_train=True)####Change to dynamic
 	train_set.prepare()
@@ -138,7 +138,10 @@ def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate):
 	test_set.prepare()
 	print('Test: %d' % len(test_set.image_ids))
 	# prepare config
-	config = KangarooConfig()
+	config = DataConfig()
+	config.NUM_CLASSES = 1 + len(classes)
+	config.STEPS_PER_EPOCH = stepsPerEpoch
+	config.LEARNING_RATE = learningRate
 	config.display()
 	# define the model
 

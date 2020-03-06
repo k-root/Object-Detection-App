@@ -41,7 +41,9 @@ export class ShowTemplatesComponent implements OnInit {
   displayModel: boolean = false;
   traverse:boolean=false;
   trainModelInput={};
-  importClasses; importclassCount;
+  importClasses;
+  importclassCount;
+  stepsPerEpoch;
   selectModelName;
   modelTraining;
   editImport:boolean=false;
@@ -70,10 +72,14 @@ export class ShowTemplatesComponent implements OnInit {
           this.importclassCount = JSON.parse(params.get('importclassCount'));
           this.importClasses = JSON.parse(params.get('importClasses'));
           this.importFolder = JSON.parse(params.get('importFolder'));
+          this.stepsPerEpoch = JSON.parse(params.get('stepsPerEpoch'));
           console.log(this.importFolder)
           this.trainModelInput["importClassCount"] = this.importclassCount
           this.trainModelInput["importClasses"] = this.importClasses
           this.trainModelInput["importFolder"] = this.importFolder
+          this.trainModelInput["stepsPerEpoch"] =
+
+          
           this.traverse=true;       
           
 

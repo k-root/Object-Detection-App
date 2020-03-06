@@ -53,6 +53,19 @@
         height: 10%;">
         </td>
     </tr>
+
+    <tr style="border-bottom:0">
+      <td style="border-bottom:0">
+        <label style="float:unset;margin-right: 10px;color: grey;" >Steps per epochs</label> 
+        
+      </td>
+      <td style="border-bottom:0">
+        <input class="epochRate" type="number" min="0" id="nclass" name="nclass" [(ngModel)]="stepsPerEpoch"  style="width: 30%;
+        height: 10%;">
+        </td>
+    </tr>
+
+
     <tr style="border-bottom: 0;">
       <td style="border-bottom:0">
         <label style="float:unset;margin-right: 10px;color: grey;" >Learning Rate</label> 
@@ -63,6 +76,8 @@
     height: 10%;">
         </td>
     </tr>
+
+    
   </table>
   <!-- <label style="float:unset;margin-right: 10px;color: grey;" >Number of epochs</label> 
   <input class="epochRate" type="number" min="0" id="nclass" name="nclass" [(ngModel)]="epoch"  style="width: 5%;

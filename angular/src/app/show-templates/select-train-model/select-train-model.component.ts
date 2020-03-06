@@ -14,7 +14,9 @@ export class SelectTrainModelComponent implements OnInit {
   trainSelect:boolean=false;
   selectedModel;
   currentModel;
-  epoch;learningRate;
+  epoch;
+  learningRate;
+  stepsPerEpoch = 128;
   objectKeys=Object.keys
   importClasses; importclassCount;
   selectModelName;
@@ -77,7 +79,7 @@ export class SelectTrainModelComponent implements OnInit {
   onClickContinue(){
     if(this.trainSelect)
     {
-    this.router.navigate(['/show'],{ queryParams: {'evaluateSelect': JSON.stringify(true),'epochs':JSON.stringify(this.epoch),'learningRate':JSON.stringify(this.learningRate)} });
+    this.router.navigate(['/show'],{ queryParams: {'evaluateSelect': JSON.stringify(true),'epochs':JSON.stringify(this.epoch),'learningRate':JSON.stringify(this.learningRate), 'stepsPerEpoch':JSON.stringify(this.stepsPerEpoch)} });
     }
     else{
      this.router.navigate(['/show'],{ queryParams: {'trainSelect': JSON.stringify(true),'selectModelName':JSON.stringify(this.models[this.currentModel])} }); 
@@ -89,6 +91,7 @@ export class SelectTrainModelComponent implements OnInit {
       this.toastr.warningToastr('Set Learning Rate to < 1', );
       trainview=false;
     }
+    
     if(!(this.importFolder || this.importclassCount || this.importClasses)){
       this.toastr.warningToastr('Import Dataset', );
       trainview=false;
