@@ -118,12 +118,16 @@ class Dataset(Dataset):
 
 # define a configuration for the model
 class DataConfig(Config):
-	# define the name of the configuration
+	
+	def __init__(self, num_classes):
+		self.NUM_CLASSES = num_classes
+		super().__init__()
 	NAME = "ggb_cfg"####Change to dynamic
 	# number of classes (background + kangaroo)
-	NUM_CLASSES = 1 + 0####Change to dynamic
+	# NUM_CLASSES = 1 + 13####Change to dynamic
 	# number of training steps per epoch
 	STEPS_PER_EPOCH = 96####Change to dynamic
+		
 
 # prepare train set
 
@@ -138,8 +142,11 @@ def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate, stepsPe
 	test_set.prepare()
 	print('Test: %d' % len(test_set.image_ids))
 	# prepare config
-	config = DataConfig()
-	config.NUM_CLASSES = 1 + len(classes)
+	config = DataConfig(num_classes=len(classes)+1)
+	print("Config num classes-=-=-=-=-=-=-=-=-=-=-=",len(classes), 1+len(classes))
+	config.NUM_CLASSES = int(1 + len(classes))
+	# config.setNumClasses(len(classes))
+	print("-=-=-=-=-=-=-=-=config Num classes = ", config.NUM_CLASSES)
 	config.STEPS_PER_EPOCH = stepsPerEpoch
 	config.LEARNING_RATE = learningRate
 	config.display()

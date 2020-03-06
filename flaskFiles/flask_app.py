@@ -19,7 +19,7 @@ from .getNumClassesOfData  import getClasses
 flask_app = Blueprint('flask_app', __name__)
 
 
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 import pathlib
 
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
