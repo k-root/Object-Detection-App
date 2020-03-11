@@ -107,7 +107,7 @@ export class SelectTrainModelComponent implements OnInit {
       
       if(this.trainSelect)
       {
-         this.router.navigate(['/show'],{ queryParams: {'evaluateSelect': JSON.stringify(true),'epochs':JSON.stringify(this.epoch),'learningRate':JSON.stringify(this.learningRate),'modelTraining':JSON.stringify(this.modelTraining)} });
+         this.router.navigate(['/show'],{ queryParams: {'evaluateSelect': JSON.stringify(true),'epochs':JSON.stringify(this.epoch),'learningRate':JSON.stringify(this.learningRate),'modelTraining':JSON.stringify(this.modelTraining), 'stepsPerEpoch':JSON.stringify(this.stepsPerEpoch)} });
       }
     }
   }
