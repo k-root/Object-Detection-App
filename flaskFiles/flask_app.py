@@ -272,7 +272,7 @@ def getTestModels():
                 if items[-3:]==".h5":
                     modelsList.append(items+"_"+configModels[-13:])
     print("modelsList: ",modelsList)
-    return modelsList
+    return json.dumps(modelsList)
 
 
 
