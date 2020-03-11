@@ -61,7 +61,11 @@ export class TestEvaluateModelComponent implements OnInit {
   ngOnInit() {
     this.apiservice.getTestModels().subscribe(
       resp=>{
-        this.models = resp
+        console.log(resp)
+        // for(let items=0; items<resp.length;items++){
+          
+        // }
+        // this.models = resp
       },err=>{
         console.log("error", err)
         this.toastr.errorToastr("Couldn't retireve models","Oops!!")

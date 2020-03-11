@@ -264,7 +264,7 @@ def getModelNames():
 def getTestModels():
     pathToModels = "users/user1/dataset/models/"
     datsetsModelDir = os.listdir(pathToModels)
-    modelsList = []
+    modelsList = {}
     for configModels in datsetsModelDir:
         if os.path.isdir(pathToModels+configModels):
             content = os.listdir(pathToModels+configModels)
@@ -275,7 +275,8 @@ def getTestModels():
             time = dateOfModel[9:11]+"hr"+dateOfModel[11:13]
             for items in content:
                 if items[-3:]==".h5":
-                    modelsList.append(items[:-3]+"_"+date+"/"+month+"/"+year+"T"+time)
+                    modelsList[pathToModels+configModels+items]=items[:-3]+"_"+date+"/"+month+"/"+year+"T"+time
+                    # modelsList.append()
     print("modelsList: ",modelsList)
     return json.dumps(modelsList)
 
