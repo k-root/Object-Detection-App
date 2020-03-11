@@ -260,6 +260,21 @@ def getModelNames():
 # if __name__ == '__main__':
 #     app.run(host='127.0.0.1', port=8080, debug=True)
 
+@flask_app.route('/getTestModels', methods=['GET'])
+def getTestModels():
+    pathToModels = "users/user1/dataset/models/"
+    datsetsModelDir = os.listdir(pathToModels)
+    modelsList = []
+    for configModels in datsetsModelDir:
+        if os.path.isdir(pathToModels+configModels):
+            content = os.listdir(pathToModels+configModels)
+            for items in content:
+                if items[-3:]==".h5":
+                    modelsList.append(items+"_"+configModels[-13:])
+    print("modelsList: ",modelsList)
+    return modelsList
+
+
 
 def json_response(payload, status=200):
  return (json.dumps(payload), status, {'content-type': 'application/json'})
