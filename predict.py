@@ -20,8 +20,9 @@ class Dataset(Dataset):
 	# load the dataset definitions
 	def load_dataset(self, dataset_dir, classes, is_train=True):
 		# define classes####Change to dynamic   ####classes=['class1', 'class2', 'class3', .....]
+		class_info=[]
 		for i in range(len(classes)):
-			self.add_class("dataset", i+1, classes[i])
+			class_info.append(self.add_class("dataset", i+1, classes[i]))
 		# define data locations
 		images_dir = dataset_dir + '/images/'
 		annotations_dir = dataset_dir + '/annots/'

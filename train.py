@@ -13,8 +13,9 @@ class Dataset(Dataset):
 	# load the dataset definitions
 	def load_dataset(self, dataset_dir, classes, is_train=True):
 		# define classes####Change to dynamic   ####classes=['class1', 'class2', 'class3', .....]
+		class_info=[]
 		for i in range(len(classes)):
-			self.add_class("dataset", i+1, classes[i])
+			class_info.append(self.add_class("dataset", i+1, classes[i]))
 		# define data locations
 		images_dir = dataset_dir + '/images/'
 		annotations_dir = dataset_dir + '/annots/'
@@ -44,7 +45,7 @@ class Dataset(Dataset):
 				img_path = images_dir + images[filenumber]
 				ann_path = annotations_dir + image_id + '.xml'
 				self.add_image('dataset', image_id=image_id, path=img_path, annotation=ann_path)
-
+		return class_info
 		# for filename in listdir(images_dir):####Change to dynamic####Change to dynamic
 		# 	# extract image id
 		# 	image_id = filename[:-4]
@@ -135,11 +136,13 @@ def run_train(datasetDir, modelWeight, classes, numEpochs, learningRate, stepsPe
 	train_set = Dataset()
 	train_set.load_dataset(datasetDir, classes,  is_train=True)####Change to dynamic
 	train_set.prepare()
+	print("TrainDataset class info: ",train_set.class_info)
 	print('Train: %d' % len(train_set.image_ids))
 	# prepare test/val set
 	test_set = Dataset()
 	test_set.load_dataset(datasetDir, classes, is_train=False)
 	test_set.prepare()
+	print("TestDataset class info: ",test_set.class_info)
 	print('Test: %d' % len(test_set.image_ids))
 	# prepare config
 	config = DataConfig(num_classes=len(classes)+1)

@@ -182,6 +182,11 @@ def post():
 @flask_app.route('/testImages', methods=['POST'])
 def postImages():
     try:
+        # data = request.json.get("modelInput")
+        # dataset_dir = "datasets/"+data['importFolder'].split(".")[0]
+        datasetDir = "datasets/ggbDatasetStraightFlangedFRC/"
+        classesList = getClasses(datasetDir)
+        classes = list(classesList)
         print(time.time())
         numFiles = len(request.files)
         print("number of files uploaded",numFiles)
@@ -218,15 +223,15 @@ def postImages():
         for files in dirFiles:
             if not os.path.isdir(imagesDir+files):
                 # imageFiles.append(files)
-                print(files)
+                # print(files)
                 testFile = imagesDir+files
-                imagePath=predict_individual.predict(testFile, modelName)
+                imagePath=predict_individual.predict(testFile, modelName, datasetDir, classes)
                 with open(imagePath, "rb") as img:
                     data = img.read()
                     encodedData = base64.encodestring(data)
                     imageList.append(encodedData.decode('ascii'))
                 print("checkpom 5")
-        print("checkpom 6", imageList)     
+        # print("checkpom 6", imageList)     
         return {"imageList":imageList}
         # return send_from_directory()
         # return json_response({'message': 'success', 'imagePayload':imageList}, 200)
