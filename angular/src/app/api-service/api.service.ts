@@ -89,6 +89,10 @@ export class ApiService {
     return this.http.get(`${this.BASE_URL}/api/getModelNames`,this.requestOptions);
   }
 
+  getTestModels():Observable<any>{
+    this.init();
+    return this.http.get(`${this.BASE_URL}/api/getTestModels`,this.requestOptions);
+  }
   getTrainResults(modelInput):Observable<any>{
     this.init();
     console.log(modelInput, "entered train result")

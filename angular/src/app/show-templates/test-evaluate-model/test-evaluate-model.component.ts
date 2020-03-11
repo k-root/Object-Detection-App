@@ -3,6 +3,7 @@ import { ApiService } from '../../api-service/api.service';
 import { SelectTrainModelComponent } from '../select-train-model/select-train-model.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { ToastrManager } from 'ng6-toastr-notifications';
 export interface Food {
   value: string;
   viewValue: string;
@@ -54,9 +55,18 @@ export class TestEvaluateModelComponent implements OnInit {
   constructor(private apiservice: ApiService,
     private selectTrain: SelectTrainModelComponent,
     private sanitizer: DomSanitizer,
-    private spinner: Ng4LoadingSpinnerService) { }
+    private spinner: Ng4LoadingSpinnerService,
+    private toastr: ToastrManager) { }
 
   ngOnInit() {
+    this.apiservice.getTestModels().subscribe(
+      resp=>{
+        this.models = resp
+      },err=>{
+        console.log("error", err)
+        this.toastr.errorToastr("Couldn't retireve models","Oops!!")
+      }
+    )
     console.log(this.header)
     console.log(this.selectTrain.globalStr)
     this.selectTrain.globalStr = "changed text"

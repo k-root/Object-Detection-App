@@ -275,7 +275,7 @@ def getTestModels():
             time = dateOfModel[9:11]+"hr"+dateOfModel[11:13]
             for items in content:
                 if items[-3:]==".h5":
-                    modelsList.append(items+"_"+date+"/"+month+"/"+year+"T"+time)
+                    modelsList.append(items[:-3]+"_"+date+"/"+month+"/"+year+"T"+time)
     print("modelsList: ",modelsList)
     return json.dumps(modelsList)
 
